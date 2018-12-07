@@ -24,7 +24,7 @@ public:
     std::vector<damage_special_effect> the_special_damage_effects;
     double generated_damage_number;
     double caused_damage_number;
-    double crit_factor;
+    double crit_factor = 1.0;
 };
 
 #endif //ATTACK_TRAJECTORY_H

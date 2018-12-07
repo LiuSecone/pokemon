@@ -37,5 +37,15 @@ namespace tests
             Assert::AreEqual(std::size_t(15), ppa->get_level());
             Assert::AreNotEqual(health, ppa->get_health());
         }
+
+        TEST_METHOD(generate_damage_test) {
+            std::shared_ptr<hero> ppa(new agile("PA"));
+            std::shared_ptr<hero> psk(new power("SK"));
+            attack_trajectory trajectory;
+            ppa->generate_damage(trajectory);
+            const auto health = psk->get_health();
+            psk->get_damage(trajectory);
+            Assert::AreNotEqual(health, psk->get_health());
+        }
     };
 }

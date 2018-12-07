@@ -17,7 +17,10 @@ protected:
     static constexpr double basic_damage = 10;
     static constexpr double basic_health = 100;
     static constexpr double basic_attack_time = 1.2;
-    static constexpr double basic_armor = 1;
+    static constexpr double basic_armor = 0;
+    static constexpr double armor_count_factor = 0.05;
+    static constexpr double remote_attack_miss_prohibit = 0.05;
+    static constexpr double armor_get_by_agility_factor = 1 / 6.25;
     static constexpr std::size_t max_level = 15;
     static constexpr std::size_t max_exp = 1000;
     static std::default_random_engine e_;
@@ -37,6 +40,7 @@ protected:
     double health_;
     double attack_time_;
     double armor_;
+    hero & basic_level_up();
     virtual hero & level_up() = 0;
 public:
     hero() = delete;
@@ -85,7 +89,7 @@ public:
         exp_(0),
         damage_(basic_damage),
         attack_time_(basic_attack_time),
-        armor_(basic_armor) {
+        armor_(0){
         ++hero_cnt_;
         strength_ += u_(e_);
         agility_ += u_(e_);
