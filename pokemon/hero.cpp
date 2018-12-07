@@ -28,6 +28,7 @@ hero & hero::gain_exp(const std::size_t & exp) {
     while (level_ != max_level && exp_ >= max_exp) {
         exp_ -= max_exp;
         this->level_up();
+        health_ = count_filled_health(strength_);
     }
     while (level_ == max_level && exp_ > max_exp) {
         exp_ -= max_exp;
@@ -46,6 +47,10 @@ hero & power::level_up() {
 }
 
 hero & power::get_damage(const double & attack_trajectory) {
+    return *this;
+}
+
+hero & power::generate_damage() {
     return *this;
 }
 
