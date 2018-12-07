@@ -5,6 +5,8 @@
 #include <random>
 #include <string>
 
+#include "attack_trajectory.h"
+
 class hero {
 private:
     static std::size_t hero_cnt_;
@@ -82,7 +84,6 @@ public:
         level_(1),
         exp_(0),
         damage_(basic_damage),
-        health_(basic_health),
         attack_time_(basic_attack_time),
         armor_(basic_armor) {
         ++hero_cnt_;
@@ -93,6 +94,7 @@ public:
         agility_growth_ += u_(e_);
         strength_growth_ += u_(e_);
         damage_ += n_(e_) + u_(e_);
+        health_ = count_filled_health(strength_);
         if (type == std::string("power")) {
             strength_ += n_(e_);
             strength_growth_ += basic_main_properties_growth;
@@ -110,12 +112,14 @@ public:
     hero& operator=(const hero&) = delete;
     hero& operator=(hero &&) noexcept = delete;
     hero(hero &&) noexcept = delete;
-    static double count_health(const double &strength);
+    static double count_filled_health(const double &strength);
     std::size_t get_level() const;
     std::size_t get_exp() const;
     static std::size_t set_hero_cnt(const std::size_t &cnt);
+    double get_health() const;
     hero & gain_exp(const std::size_t &exp);
-    virtual hero & calc_damage(const double &damge) = 0;
+    virtual hero & get_damage(const double &attack_trajectory) = 0;
+    virtual hero & generate_damage() = 0;
     virtual ~hero() = default;
 };
 
@@ -156,7 +160,8 @@ public:
             attack_time,
             armor) {
     }
-    hero & calc_damage(const double &damage) override;
+    hero & get_damage(const double &attack_trajectory) override;
+    hero & generate_damage() override;
 };
 
 class agile : public hero {
@@ -196,7 +201,8 @@ public:
             attack_time,
             armor) {
     }
-    hero & calc_damage(const double &damage) override;
+    hero & get_damage(const double &attack_trajectory) override;
+    hero & generate_damage() override;
 };
 
 class intellectual : public hero {
@@ -236,9 +242,9 @@ public:
             attack_time,
             armor) {
     }
-    hero & calc_damage(const double &damage) override;
+    hero & get_damage(const double &attack_trajectory) override;
+    hero & generate_damage() override;
 };
-
 
 class meat : public hero {
 protected:
@@ -277,9 +283,11 @@ public:
             attack_time,
             armor) {
     }
-    hero & calc_damage(const double &damage) override;
+    hero & get_damage(const double &attack_trajectory) override;
+    hero & generate_damage() override;
 };
 
+/*
 class sk : public power {
 public:
     sk() = delete;
@@ -424,12 +432,12 @@ public:
     }
 };
 
-class ss : public intellectual {
+class nec : public intellectual {
 public:
-    ss() = delete;
-    explicit ss(std::string &&name) :intellectual(std::move(name)) {
+    nec() = delete;
+    explicit nec(std::string &&name) :intellectual(std::move(name)) {
     }
-    explicit ss(
+    explicit nec(
         std::string &&name,
         const double &strength,
         const double &agility,
@@ -567,5 +575,6 @@ public:
             armor) {
     }
 };
+*/
 
 #endif

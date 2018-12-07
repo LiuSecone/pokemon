@@ -21,6 +21,9 @@
     <ClInclude Include="hero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="attack_trajectory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -31,6 +34,9 @@
     </ClCompile>
     <ClCompile Include="hero.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_trajectory.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

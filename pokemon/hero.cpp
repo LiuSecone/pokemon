@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "hero.h"
 
-double hero::count_health(const double & strength) {
+double hero::count_filled_health(const double & strength) {
     const auto health = basic_health + strength;
     return health;
 }
@@ -17,6 +17,10 @@ std::size_t hero::get_exp() const {
 std::size_t hero::set_hero_cnt(const std::size_t & cnt) {
     hero_cnt_ = cnt;
     return hero_cnt_;
+}
+
+double hero::get_health() const{
+    return health_;
 }
 
 hero & hero::gain_exp(const std::size_t & exp) {
@@ -41,7 +45,7 @@ hero & power::level_up() {
     return *this;
 }
 
-hero & power::calc_damage(const double & damage) {
+hero & power::get_damage(const double & attack_trajectory) {
     return *this;
 }
 
@@ -55,7 +59,11 @@ hero & agile::level_up() {
     return *this;
 }
 
-hero & agile::calc_damage(const double & damage) {
+hero & agile::get_damage(const double & attack_trajectory) {
+    return *this;
+}
+
+hero & agile::generate_damage() {
     return *this;
 }
 
@@ -69,7 +77,11 @@ hero & intellectual::level_up() {
     return *this;
 }
 
-hero & intellectual::calc_damage(const double & damage) {
+hero & intellectual::get_damage(const double & attack_trajectory) {
+    return *this;
+}
+
+hero & intellectual::generate_damage() {
     return *this;
 }
 
@@ -83,7 +95,11 @@ hero & meat::level_up() {
     return *this;
 }
 
-hero & meat::calc_damage(const double & damage) {
+hero & meat::get_damage(const double & attack_trajectory) {
+    return *this;
+}
+
+hero & meat::generate_damage() {
     return *this;
 }
 
