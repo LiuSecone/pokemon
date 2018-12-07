@@ -118,8 +118,8 @@ public:
     static std::size_t set_hero_cnt(const std::size_t &cnt);
     double get_health() const;
     hero & gain_exp(const std::size_t &exp);
-    virtual hero & get_damage(const double &attack_trajectory) = 0;
-    virtual hero & generate_damage() = 0;
+    virtual hero & get_damage(attack_trajectory &trajectory) = 0;
+    virtual hero & generate_damage(attack_trajectory & trajectory) = 0;
     virtual ~hero() = default;
 };
 
@@ -160,8 +160,8 @@ public:
             attack_time,
             armor) {
     }
-    hero & get_damage(const double &attack_trajectory) override;
-    hero & generate_damage() override;
+    hero & get_damage(attack_trajectory &trajectory) override;
+    hero & generate_damage(attack_trajectory & trajectory) override;
 };
 
 class agile : public hero {
@@ -201,8 +201,8 @@ public:
             attack_time,
             armor) {
     }
-    hero & get_damage(const double &attack_trajectory) override;
-    hero & generate_damage() override;
+    hero & get_damage(attack_trajectory &trajectory) override;
+    hero & generate_damage(attack_trajectory & trajectory) override;
 };
 
 class intellectual : public hero {
@@ -242,8 +242,8 @@ public:
             attack_time,
             armor) {
     }
-    hero & get_damage(const double &attack_trajectory) override;
-    hero & generate_damage() override;
+    hero & get_damage(attack_trajectory &trajectory) override;
+    hero & generate_damage(attack_trajectory & trajectory) override;
 };
 
 class meat : public hero {
@@ -283,8 +283,8 @@ public:
             attack_time,
             armor) {
     }
-    hero & get_damage(const double &attack_trajectory) override;
-    hero & generate_damage() override;
+    hero & get_damage(attack_trajectory &trajectory) override;
+    hero & generate_damage(attack_trajectory & trajectory) override;
 };
 
 /*

@@ -46,11 +46,11 @@ hero & power::level_up() {
     return *this;
 }
 
-hero & power::get_damage(const double & attack_trajectory) {
+hero & power::get_damage(attack_trajectory & trajectory) {
     return *this;
 }
 
-hero & power::generate_damage() {
+hero & power::generate_damage(attack_trajectory & trajectory) {
     return *this;
 }
 
@@ -64,11 +64,11 @@ hero & agile::level_up() {
     return *this;
 }
 
-hero & agile::get_damage(const double & attack_trajectory) {
+hero & agile::get_damage(attack_trajectory & trajectory) {
     return *this;
 }
 
-hero & agile::generate_damage() {
+hero & agile::generate_damage(attack_trajectory & trajectory) {
     return *this;
 }
 
@@ -82,11 +82,11 @@ hero & intellectual::level_up() {
     return *this;
 }
 
-hero & intellectual::get_damage(const double & attack_trajectory) {
+hero & intellectual::get_damage(attack_trajectory & trajectory) {
     return *this;
 }
 
-hero & intellectual::generate_damage() {
+hero & intellectual::generate_damage(attack_trajectory & trajectory) {
     return *this;
 }
 
@@ -100,11 +100,11 @@ hero & meat::level_up() {
     return *this;
 }
 
-hero & meat::get_damage(const double & attack_trajectory) {
+hero & meat::get_damage(attack_trajectory & trajectory) {
     return *this;
 }
 
-hero & meat::generate_damage() {
+hero & meat::generate_damage(attack_trajectory & trajectory) {
     return *this;
 }
 

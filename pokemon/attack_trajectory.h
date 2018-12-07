@@ -5,24 +5,26 @@
 
 #include <vector>
 
-enum class attack_type {
-    melee_attack,
-    remote_attack,
-    soul_attack,
-    punch_attack,
+enum class damage_type {
+    melee_damage,
+    remote_damage,
+    soul_damage,
+    punch_damage,
+    pure_damage,
 };
 
-enum class attack_special_effect {
+enum class damage_special_effect {
     crit,
     bloodsucking,
 };
 
 class attack_trajectory {
 public:
-    attack_type the_type_of_attack;
-    std::vector<attack_special_effect> the_special_attack_effects;
+    damage_type the_type_of_attack;
+    std::vector<damage_special_effect> the_special_damage_effects;
     double generated_damage_number;
     double caused_damage_number;
+    double crit_factor;
 };
 
 #endif //ATTACK_TRAJECTORY_H
