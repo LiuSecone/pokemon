@@ -32,6 +32,7 @@ private:
 public:
     tcp_server();
     int init();
+    std::string process_request(const std::string &str);
     int run();
     int process_client_socket(const SOCKET client_socket);
     ~tcp_server();

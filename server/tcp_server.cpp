@@ -50,6 +50,10 @@ int tcp_server::init() {
     return 0;
 }
 
+std::string tcp_server::process_request(const std::string &str) {
+    return str;
+}
+
 int tcp_server::run() {
     while (true) { 
         // Accept a client socket
@@ -72,9 +76,14 @@ int tcp_server::process_client_socket(const SOCKET client_socket) {
         i_result = recv(client_socket, recvbuf, default_buff_len, 0);
         if (i_result > 0) {
             printf("Bytes received: %d\n", i_result);
-
+            recvbuf[i_result] = '\0';
+            const std::string recv_string = recvbuf;
+            const auto requ_string = process_request(recv_string);
+            const auto send_len = requ_string.length();
+            char sendbuf[default_buff_len];
+            strcpy_s(sendbuf, requ_string.c_str());
             // Echo the buffer back to the sender
-            const auto i_send_result = send(client_socket, recvbuf, i_result, 0);
+            const auto i_send_result = send(client_socket, sendbuf, send_len, 0);
             if (i_send_result == SOCKET_ERROR) {
                 printf("send failed with error: %d\n", WSAGetLastError());
                 closesocket(client_socket);
@@ -89,7 +98,6 @@ int tcp_server::process_client_socket(const SOCKET client_socket) {
             closesocket(client_socket);
             return 1;
         }
-
     } while (i_result > 0);
 
     // shutdown the connection since we're done
