@@ -36,7 +36,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="attack_trajectory.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
