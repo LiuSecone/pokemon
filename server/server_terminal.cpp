@@ -1,4 +1,7 @@
+#include <fstream>
+
 #include "server_terminal.h"
+#include "../pokemon/hero.h"
 
 server_terminal::server_terminal() {
     ZeroMemory(&hints_, sizeof(hints_));
@@ -13,11 +16,11 @@ int server_terminal::init() {
     if (return_val) {
         return return_val;
     }
-    return_val = init_users();
+    return_val = init_heros();
     if (return_val) {
         return return_val;
     }
-    return_val = init_heros();
+    return_val = init_users();
     if (return_val) {
         return return_val;
     }
@@ -67,10 +70,49 @@ int server_terminal::init_tcp() {
 }
 
 int server_terminal::init_users() {
+    const std::string file_name = "users.txt";
+    std::ifstream input(file_name);
+    if (input.is_open()) {
+        int number_of_users;
+        input >> number_of_users;
+        for (auto i = 0; i != number_of_users; ++i) {
+            std::string user_name;
+            std::string password_hash;
+            auto number_of_heros = 0;
+            input >> user_name >> password_hash >> number_of_heros;
+            user_server user(std::move(user_name), std::move(password_hash));
+            for (auto i = 0; i != number_of_heros; ++i) {
+                auto hero_number = 0;
+                input >> hero_number;
+                user.heros.push_back(hero_number);
+            }
+            users_.push_back(user);
+        }
+        input.close();
+    }
+    else {
+        std::cout << "Could not open the file: " << file_name;
+        return 1;
+    }
     return 0;
 }
 
 int server_terminal::init_heros() {
+    const std::string file_name = "heros.txt";
+    std::ifstream input(file_name);
+    if (input.is_open()) {
+        int number_of_heros;
+        input >> number_of_heros;
+        for (auto i = 0; i != number_of_heros; ++i) {
+            std::string hero_type;
+            //TODO: add the init heros
+        }
+        input.close();
+    }
+    else {
+        std::cout << "Could not open the file: " << file_name;
+        return 1;
+    }
     return 0;
 }
 
@@ -103,7 +145,7 @@ int server_terminal::process_client_socket(const SOCKET client_socket) {
             recvbuf[i_result] = '\0';
             const std::string recv_string = recvbuf;
             const auto requ_string = process_request(recv_string);
-            const auto send_len = requ_string.length();
+            const auto send_len = static_cast<int>(requ_string.length());
             char sendbuf[default_buff_len];
             strcpy_s(sendbuf, requ_string.c_str());
             // Echo the buffer back to the sender

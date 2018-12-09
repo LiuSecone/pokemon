@@ -14,10 +14,11 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
+#include <vector>
 #include <thread>
 #include <mutex>
 
-#include "../pokemon/hero.h"
+#include "../pokemon/user_server.h"
 
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
@@ -31,6 +32,8 @@ private:
 
     struct addrinfo *result_ = nullptr;
     struct addrinfo hints_;
+
+    std::vector<user_server> users_;
 public:
     server_terminal();
     int init();

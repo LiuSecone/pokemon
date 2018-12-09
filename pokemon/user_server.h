@@ -6,13 +6,12 @@
 #include <string>
 #include <vector>
 
-#include "hero.h"
-
 class user_server {
 public:
     const std::string user_name;
     const std::string password_hash;
-    std::vector<std::shared_ptr<hero>> heros;
+    std::vector<int> heros;
+    bool online = false;
     explicit user_server(std::string &&name, std::string &&hash) :
     user_name(name),
     password_hash(hash) {
