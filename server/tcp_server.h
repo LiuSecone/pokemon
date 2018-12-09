@@ -23,18 +23,18 @@
 
 class tcp_server {
 private:
-    static constexpr int default_buff_len = 10;
+    static constexpr int default_buff_len = 512;
     static constexpr char default_prot[] = "60000";
     SOCKET listen_socket_ = INVALID_SOCKET;
-    SOCKET client_socket_ = INVALID_SOCKET;
 
     struct addrinfo *result_ = nullptr;
     struct addrinfo hints_;
 public:
     tcp_server();
     int init();
-    int run();
-    int process_client_socket(const SOCKET client_socket);
+    int run() const;
+    static int process_client_socket(const SOCKET client_socket);
+    ~tcp_server();
 };
 
 

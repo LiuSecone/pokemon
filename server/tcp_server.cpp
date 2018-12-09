@@ -54,18 +54,19 @@ int tcp_server::init() {
     return 0;
 }
 
-int tcp_server::run() {
-    while (true) {
+int tcp_server::run() const {
+    while (true) { 
         // Accept a client socket
-        client_socket_ = accept(listen_socket_, NULL, NULL);
-        if (client_socket_ == INVALID_SOCKET) {
+        const auto client_socket = accept(listen_socket_, NULL, NULL);
+        if (client_socket == INVALID_SOCKET) {
             printf("accept failed with error: %d\n", WSAGetLastError());
             closesocket(listen_socket_);
             WSACleanup();
             return 1;
         }
         else {
-            process_client_socket(client_socket_);
+            std::cout << "Connected" << std::endl;
+            process_client_socket(client_socket);
         }
     }
 }
@@ -80,14 +81,14 @@ int tcp_server::process_client_socket(const SOCKET client_socket) {
             printf("Bytes received: %d\n", i_result);
 
             // Echo the buffer back to the sender
-            auto iSendResult = send(client_socket, recvbuf, i_result, 0);
-            if (iSendResult == SOCKET_ERROR) {
+            const auto i_send_result = send(client_socket, recvbuf, i_result, 0);
+            if (i_send_result == SOCKET_ERROR) {
                 printf("send failed with error: %d\n", WSAGetLastError());
                 closesocket(client_socket);
                 WSACleanup();
                 return 1;
             }
-            printf("Bytes sent: %d\n", iSendResult);
+            printf("Bytes sent: %d\n", i_send_result);
         }
         else if (i_result == 0)
             printf("Connection closing...\n");
@@ -111,7 +112,11 @@ int tcp_server::process_client_socket(const SOCKET client_socket) {
 
     // cleanup
     closesocket(client_socket);
-    WSACleanup();
 
     return 0;
+}
+
+tcp_server::~tcp_server() {
+    closesocket(listen_socket_);
+    WSACleanup();
 }
