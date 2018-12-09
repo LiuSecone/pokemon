@@ -14,9 +14,9 @@
 
 
 #define DEFAULT_BUFLEN 512
-#define DEFAULT_PORT "27015"
+#define DEFAULT_PORT "60000"
 
-int __cdecl main(int argc, char **argv) {
+int __cdecl main(const int argc, char **argv) {
     WSADATA wsaData;
     SOCKET ConnectSocket = INVALID_SOCKET;
     struct addrinfo *result = NULL,
@@ -54,19 +54,19 @@ int __cdecl main(int argc, char **argv) {
     }
 
     // Attempt to connect to an address until one succeeds
-    for (ptr = result; ptr != NULL; ptr = ptr->ai_next) {
+    for (ptr = result; ptr != nullptr; ptr = ptr->ai_next) {
 
         // Create a SOCKET for connecting to server
         ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,
             ptr->ai_protocol);
         if (ConnectSocket == INVALID_SOCKET) {
-            printf("socket failed with error: %ld\n", WSAGetLastError());
+            printf("socket failed with error: %d\n", WSAGetLastError());
             WSACleanup();
             return 1;
         }
 
         // Connect to server.
-        iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+        iResult = connect(ConnectSocket, ptr->ai_addr, static_cast<int>(ptr->ai_addrlen));
         if (iResult == SOCKET_ERROR) {
             closesocket(ConnectSocket);
             ConnectSocket = INVALID_SOCKET;
@@ -84,7 +84,7 @@ int __cdecl main(int argc, char **argv) {
     }
 
     // Send an initial buffer
-    iResult = send(ConnectSocket, sendbuf, (char)strlen(sendbuf), 0);
+    iResult = send(ConnectSocket, sendbuf, static_cast<char>(strlen(sendbuf)), 0);
     if (iResult == SOCKET_ERROR) {
         printf("send failed with error: %d\n", WSAGetLastError());
         closesocket(ConnectSocket);
@@ -92,7 +92,7 @@ int __cdecl main(int argc, char **argv) {
         return 1;
     }
 
-    printf("Bytes Sent: %ld\n", iResult);
+    printf("Bytes Sent: %d\n", iResult);
 
     // shutdown the connection since no more data will be sent
     iResult = shutdown(ConnectSocket, SD_SEND);

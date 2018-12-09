@@ -5,15 +5,60 @@
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include <iostream>
 #include <cstdlib>
 #include <cstdio>
+#include <thread>
+#include <mutex>
+
 
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
 // #pragma comment (lib, "Mswsock.lib")
 
 #define DEFAULT_BUFLEN 512
-#define DEFAULT_PORT "27015"
+#define DEFAULT_PORT "60000"
+
+int process_client_socket(const SOCKET ClientSocket) {
+    // Receive until the peer shuts down the connection
+    char recvbuf[DEFAULT_BUFLEN];
+    int recvbuflen = DEFAULT_BUFLEN;
+    int iResult;
+    do {
+        iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
+        if (iResult > 0) {
+            printf("Bytes received: %d\n", iResult);
+
+            // Echo the buffer back to the sender
+            auto iSendResult = send(ClientSocket, recvbuf, iResult, 0);
+            if (iSendResult == SOCKET_ERROR) {
+                printf("send failed with error: %d\n", WSAGetLastError());
+                closesocket(ClientSocket);
+                WSACleanup();
+                return 1;
+            }
+            printf("Bytes sent: %d\n", iSendResult);
+        }
+        else if (iResult == 0)
+            printf("Connection closing...\n");
+        else {
+            printf("recv failed with error: %d\n", WSAGetLastError());
+            closesocket(ClientSocket);
+            WSACleanup();
+            return 1;
+        }
+
+    } while (iResult > 0);
+
+    // shutdown the connection since we're done
+    iResult = shutdown(ClientSocket, SD_SEND);
+    if (iResult == SOCKET_ERROR) {
+        printf("shutdown failed with error: %d\n", WSAGetLastError());
+        closesocket(ClientSocket);
+        WSACleanup();
+        return 1;
+    }
+}
 
 int __cdecl main(void) {
     WSADATA wsaData;
@@ -24,10 +69,6 @@ int __cdecl main(void) {
 
     struct addrinfo *result = NULL;
     struct addrinfo hints;
-
-    int iSendResult;
-    char recvbuf[DEFAULT_BUFLEN];
-    int recvbuflen = DEFAULT_BUFLEN;
 
     // Initialize Winsock
     iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -79,58 +120,23 @@ int __cdecl main(void) {
         return 1;
     }
 
-    // Accept a client socket
-    ClientSocket = accept(ListenSocket, NULL, NULL);
-    if (ClientSocket == INVALID_SOCKET) {
-        printf("accept failed with error: %d\n", WSAGetLastError());
-        closesocket(ListenSocket);
-        WSACleanup();
-        return 1;
-    }
-
-    // No longer need server socket
-    closesocket(ListenSocket);
-
-    // Receive until the peer shuts down the connection
-    do {
-
-        iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
-        if (iResult > 0) {
-            printf("Bytes received: %d\n", iResult);
-
-            // Echo the buffer back to the sender
-            iSendResult = send(ClientSocket, recvbuf, iResult, 0);
-            if (iSendResult == SOCKET_ERROR) {
-                printf("send failed with error: %d\n", WSAGetLastError());
-                closesocket(ClientSocket);
-                WSACleanup();
-                return 1;
-            }
-            printf("Bytes sent: %d\n", iSendResult);
-        }
-        else if (iResult == 0)
-            printf("Connection closing...\n");
-        else {
-            printf("recv failed with error: %d\n", WSAGetLastError());
-            closesocket(ClientSocket);
+    while (true) {
+        // Accept a client socket
+        ClientSocket = accept(ListenSocket, NULL, NULL);
+        if (ClientSocket == INVALID_SOCKET) {
+            printf("accept failed with error: %d\n", WSAGetLastError());
+            closesocket(ListenSocket);
             WSACleanup();
             return 1;
         }
-
-    } while (iResult > 0);
-
-    // shutdown the connection since we're done
-    iResult = shutdown(ClientSocket, SD_SEND);
-    if (iResult == SOCKET_ERROR) {
-        printf("shutdown failed with error: %d\n", WSAGetLastError());
-        closesocket(ClientSocket);
-        WSACleanup();
-        return 1;
+        else {
+            process_client_socket(ClientSocket);
+        }
     }
+ 
 
-    // cleanup
-    closesocket(ClientSocket);
-    WSACleanup();
+    // No longer need server socket
+    closesocket(ListenSocket);
 
     return 0;
 }
