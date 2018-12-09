@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef TCP_SERVER_H
-#define TCP_SERVER_H
+#ifndef TCP_CLIENT_H
+#define TCP_CLINET_H
 
 #undef UNICODE
 
@@ -21,21 +21,20 @@
 #pragma comment (lib, "Ws2_32.lib")
 // #pragma comment (lib, "Mswsock.lib")
 
-class tcp_server {
+class tcp_client {
 private:
     static constexpr int default_buff_len = 512;
     static constexpr char default_prot[] = "60000";
-    SOCKET listen_socket_ = INVALID_SOCKET;
+    SOCKET connect_socket_ = INVALID_SOCKET;
 
     struct addrinfo *result_ = nullptr;
     struct addrinfo hints_;
 public:
-    tcp_server();
+    tcp_client();
     int init();
-    int run();
-    int process_client_socket(const SOCKET client_socket);
-    ~tcp_server();
+    std::string request(const std::string & str);
+    ~tcp_client();
 };
 
 
-#endif TCP_SERVER_H
+#endif //TCPCLIENT_H

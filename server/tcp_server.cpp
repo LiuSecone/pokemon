@@ -19,7 +19,6 @@ int tcp_server::init() {
     i_result = getaddrinfo(nullptr, default_prot, &hints_, &result_);
     if (i_result != 0) {
         printf("getaddrinfo failed with error: %d\n", i_result);
-        WSACleanup();
         return 1;
     }
 
@@ -28,7 +27,6 @@ int tcp_server::init() {
     if (listen_socket_ == INVALID_SOCKET) {
         printf("socket failed with error: %ld\n", WSAGetLastError());
         freeaddrinfo(result_);
-        WSACleanup();
         return 1;
     }
 
@@ -38,7 +36,6 @@ int tcp_server::init() {
         printf("bind failed with error: %d\n", WSAGetLastError());
         freeaddrinfo(result_);
         closesocket(listen_socket_);
-        WSACleanup();
         return 1;
     }
 
@@ -48,24 +45,20 @@ int tcp_server::init() {
     if (i_result == SOCKET_ERROR) {
         printf("listen failed with error: %d\n", WSAGetLastError());
         closesocket(listen_socket_);
-        WSACleanup();
         return 1;
     }
     return 0;
 }
 
-int tcp_server::run() const {
+int tcp_server::run() {
     while (true) { 
         // Accept a client socket
         const auto client_socket = accept(listen_socket_, NULL, NULL);
         if (client_socket == INVALID_SOCKET) {
             printf("accept failed with error: %d\n", WSAGetLastError());
             closesocket(listen_socket_);
-            WSACleanup();
-            return 1;
         }
         else {
-            std::cout << "Connected" << std::endl;
             process_client_socket(client_socket);
         }
     }
@@ -85,7 +78,6 @@ int tcp_server::process_client_socket(const SOCKET client_socket) {
             if (i_send_result == SOCKET_ERROR) {
                 printf("send failed with error: %d\n", WSAGetLastError());
                 closesocket(client_socket);
-                WSACleanup();
                 return 1;
             }
             printf("Bytes sent: %d\n", i_send_result);
@@ -95,7 +87,6 @@ int tcp_server::process_client_socket(const SOCKET client_socket) {
         else {
             printf("recv failed with error: %d\n", WSAGetLastError());
             closesocket(client_socket);
-            WSACleanup();
             return 1;
         }
 
@@ -106,7 +97,6 @@ int tcp_server::process_client_socket(const SOCKET client_socket) {
     if (i_result == SOCKET_ERROR) {
         printf("shutdown failed with error: %d\n", WSAGetLastError());
         closesocket(client_socket);
-        WSACleanup();
         return 1;
     }
 
