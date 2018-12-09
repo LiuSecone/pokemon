@@ -155,7 +155,8 @@
     <ClInclude Include="attack_trajectory.h" />
     <ClInclude Include="hero.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="user.h" />
+    <ClInclude Include="user_client.h" />
+    <ClInclude Include="user_server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="attack_trajectory.cpp" />

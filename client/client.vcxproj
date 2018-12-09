@@ -116,10 +116,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="client.cpp" />
-    <ClCompile Include="tcp_client.cpp" />
+    <ClCompile Include="client_terminal.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="tcp_client.h" />
+    <ClInclude Include="client_terminal.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

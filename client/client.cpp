@@ -1,7 +1,7 @@
-#include "tcp_client.h"
+#include "client_terminal.h"
 
 int main() {
-    tcp_client client;
+    client_terminal client;
     while (true) {
         std::string str;
         std::cin >> str;

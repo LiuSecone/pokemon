@@ -1,6 +1,6 @@
-#include "tcp_server.h"
+#include "server_terminal.h"
 
-tcp_server::tcp_server() {
+server_terminal::server_terminal() {
     ZeroMemory(&hints_, sizeof(hints_));
     hints_.ai_family = AF_INET;
     hints_.ai_socktype = SOCK_STREAM;
@@ -8,7 +8,23 @@ tcp_server::tcp_server() {
     hints_.ai_flags = AI_PASSIVE;
 }
 
-int tcp_server::init() {
+int server_terminal::init() {
+    auto return_val = init_tcp();
+    if (return_val) {
+        return return_val;
+    }
+    return_val = init_users();
+    if (return_val) {
+        return return_val;
+    }
+    return_val = init_heros();
+    if (return_val) {
+        return return_val;
+    }
+    return 0;
+}
+
+int server_terminal::init_tcp() {
     WSADATA wsa_data;
     auto i_result = WSAStartup(MAKEWORD(2, 2), &wsa_data);
     if (i_result != 0) {
@@ -50,11 +66,19 @@ int tcp_server::init() {
     return 0;
 }
 
-std::string tcp_server::process_request(const std::string &str) {
+int server_terminal::init_users() {
+    return 0;
+}
+
+int server_terminal::init_heros() {
+    return 0;
+}
+
+std::string server_terminal::process_request(const std::string &str) {
     return str;
 }
 
-int tcp_server::run() {
+int server_terminal::run() {
     while (true) { 
         // Accept a client socket
         const auto client_socket = accept(listen_socket_, NULL, NULL);
@@ -68,7 +92,7 @@ int tcp_server::run() {
     }
 }
 
-int tcp_server::process_client_socket(const SOCKET client_socket) {
+int server_terminal::process_client_socket(const SOCKET client_socket) {
     // Receive until the peer shuts down the connection
     char recvbuf[default_buff_len];
     int i_result;
@@ -114,7 +138,7 @@ int tcp_server::process_client_socket(const SOCKET client_socket) {
     return 0;
 }
 
-tcp_server::~tcp_server() {
+server_terminal::~server_terminal() {
     closesocket(listen_socket_);
     WSACleanup();
 }

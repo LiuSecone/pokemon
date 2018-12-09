@@ -1,7 +1,7 @@
-#include "tcp_server.h"
+#include "server_terminal.h"
 
 int main(void) {
-    tcp_server server;
+    server_terminal server;
     const auto init_result = server.init();
     if (init_result) {
         std::cout << "TCP server init Error";

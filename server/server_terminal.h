@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef TCP_SERVER_H
-#define TCP_SERVER_H
+#ifndef SERVER_TERMINAL_H
+#define SERVER_TERMINAL_H
 
 #undef UNICODE
 
@@ -17,11 +17,13 @@
 #include <thread>
 #include <mutex>
 
+#include "../pokemon/hero.h"
+
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
 // #pragma comment (lib, "Mswsock.lib")
 
-class tcp_server {
+class server_terminal {
 private:
     static constexpr int default_buff_len = 512;
     static constexpr char default_prot[] = "60000";
@@ -30,13 +32,16 @@ private:
     struct addrinfo *result_ = nullptr;
     struct addrinfo hints_;
 public:
-    tcp_server();
+    server_terminal();
     int init();
+    int init_tcp();
+    int init_users();
+    int init_heros();
     std::string process_request(const std::string &str);
     int run();
     int process_client_socket(const SOCKET client_socket);
-    ~tcp_server();
+    ~server_terminal();
 };
 
 
-#endif TCP_SERVER_H
+#endif SERVER_TERMINAL_H

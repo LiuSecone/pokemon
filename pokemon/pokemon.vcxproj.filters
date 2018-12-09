@@ -24,7 +24,10 @@
     <ClInclude Include="attack_trajectory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="user.h">
+    <ClInclude Include="user_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="user_server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

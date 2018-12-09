@@ -18,12 +18,12 @@
     <ClCompile Include="client.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="tcp_client.cpp">
+    <ClCompile Include="client_terminal.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="tcp_client.h">
+    <ClInclude Include="client_terminal.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

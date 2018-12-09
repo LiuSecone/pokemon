@@ -1,6 +1,6 @@
-#include "tcp_client.h"
+#include "client_terminal.h"
 
-tcp_client::tcp_client() {
+client_terminal::client_terminal() {
     ZeroMemory(&hints_, sizeof(hints_));
     hints_.ai_family = AF_INET;
     hints_.ai_socktype = SOCK_STREAM;
@@ -8,7 +8,7 @@ tcp_client::tcp_client() {
     hints_.ai_flags = AI_PASSIVE;
 }
 
-int tcp_client::init() {
+int client_terminal::init() {
     WSADATA wsa_data;
     auto i_result = WSAStartup(MAKEWORD(2, 2), &wsa_data);
     if (i_result != 0) {
@@ -53,7 +53,7 @@ int tcp_client::init() {
     return 0;
 }
 
-std::string tcp_client::request(const std::string & str) {
+std::string client_terminal::request(const std::string & str) {
     if (str.length() > default_buff_len) {
         std::cout << "The string is too long" << std::endl;
         return str;
@@ -90,7 +90,7 @@ std::string tcp_client::request(const std::string & str) {
     return recvbuf;
 }
 
-tcp_client::~tcp_client() {
+client_terminal::~client_terminal() {
     closesocket(connect_socket_);
     WSACleanup();
 }
