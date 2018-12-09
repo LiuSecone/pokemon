@@ -58,6 +58,7 @@ int process_client_socket(const SOCKET ClientSocket) {
         WSACleanup();
         return 1;
     }
+    return 0;
 }
 
 int __cdecl main(void) {
@@ -130,6 +131,7 @@ int __cdecl main(void) {
             return 1;
         }
         else {
+            //const auto ClientSocket_bck = ClientSocket;
             process_client_socket(ClientSocket);
         }
     }
