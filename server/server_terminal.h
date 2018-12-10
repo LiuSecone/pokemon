@@ -34,6 +34,7 @@ private:
     struct addrinfo hints_;
 
     std::vector<user_server> users_;
+    std::vector<std::string> heros_;
 public:
     server_terminal();
     int init();

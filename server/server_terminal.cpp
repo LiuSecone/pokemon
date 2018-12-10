@@ -104,8 +104,28 @@ int server_terminal::init_heros() {
         int number_of_heros;
         input >> number_of_heros;
         for (auto i = 0; i != number_of_heros; ++i) {
+            /*
             std::string hero_type;
-            //TODO: add the init heros
+            std::string name;
+            double strength;
+            double agility;
+            double intelligence;
+            double strength_growth;
+            double agility_growth;
+            double intelligence_growth;
+            std::size_t level;
+            std::size_t exp;
+            double damage;
+            double health;
+            double attack_time;
+            double armor;
+            input >> hero_type >> name >> strength >> agility >> intelligence
+                >> strength_growth >> agility_growth >> intelligence_growth
+                >> level >> exp >> damage >> health >> attack_time >> armor;
+            */
+            std::string hero;
+            std::getline(input, hero);
+            heros_.push_back(hero);
         }
         input.close();
     }
@@ -117,6 +137,7 @@ int server_terminal::init_heros() {
 }
 
 std::string server_terminal::process_request(const std::string &str) {
+    //TODO: process request
     return str;
 }
 
