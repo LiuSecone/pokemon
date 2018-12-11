@@ -88,26 +88,33 @@ void client_terminal::login_or_signin() {
         << "0.quit" << std::endl;
     std::cin >> ans;
     if (ans == 1) {
+        std::cout << "Please input your username and password, split with space or enter." << std::endl;
+        std::string username, password;
+        std::cin >> username >> password;
         request_string += "login/";
+        request_string += username + '/' + password;
+        const auto reply_string = post_request(request_string);
+        std::cout << reply_string << std::endl;
+        auto reply_vector = my_algo_lib::split(reply_string, ' ');
+        if (reply_vector[0] == "Successful!") {
+            state_ = state::logged;
+            user_id_ = std::stoi(reply_vector[1]);
+        }
     }
     if (ans == 2) {
+        std::cout << "Please input your username and password, split with space or enter." << std::endl;
+        std::string username, password;
+        std::cin >> username >> password;
         request_string += "signin/";
+        request_string += username + '/' + password;
+        const auto reply_string = post_request(request_string);
+        std::cout << reply_string << std::endl;
     }
     if (ans == 0 ) {
         exit_flag_ = true;
         return;
     }
-    std::cout << "Please input your username and password, split with space or enter." << std::endl;
-    std::string username, password;
-    std::cin >> username >> password;
-    request_string += username + '/' + password;
-    const auto reply_string = post_request(request_string);
-    auto reply_vector = my_algo_lib::split(reply_string, ' ');
-    std::cout << reply_string << std::endl;
-    if (reply_vector[0] == "Successful!") {
-        state_ = state::logged;
-        user_id_ = std::stoi(reply_vector[1]);
-    }
+
 }
 
 void client_terminal::logout_or_select_user() {
@@ -203,6 +210,7 @@ void client_terminal::show_detail_or_fight() {
 }
 
 void client_terminal::duel_fight() {
+    auto cur_hero = get_selected_hero();
     auto opponent = choose_opponent();
     state_ = state::view_hero;
 }
@@ -210,6 +218,18 @@ void client_terminal::duel_fight() {
 void client_terminal::upgrade_fight() {
     auto opponent = choose_opponent();
     state_ = state::view_hero;
+}
+
+std::shared_ptr<hero> client_terminal::get_selected_hero() {
+    std::string request_string = "get_ith_user_ith_hero/";
+    request_string += std::to_string(viewing_user_);
+    request_string += '/';
+    request_string += std::to_string(viewing_hero_);
+    std::cout << request_string << std::endl;
+    const auto reply_string = post_request(request_string);
+    std::cout << reply_string << std::endl;
+    auto const element = my_algo_lib::split(reply_string, ' ');
+    return std::shared_ptr<hero>();
 }
 
 std::shared_ptr<hero> client_terminal::choose_opponent() {
@@ -223,8 +243,6 @@ std::shared_ptr<hero> client_terminal::choose_opponent() {
     const auto reply_string = post_request(request_string);
     std::cout << reply_string << std::endl;
     auto const element = my_algo_lib::split(reply_string, ' ');
-    const auto level = std::stoi(element[7]);
-    std::cout << level << std::endl;
     std::vector<std::shared_ptr<hero>> opponents;
     for (auto i = 0; i != 3; ++i) {
         std::shared_ptr<hero> new_hero = nullptr;

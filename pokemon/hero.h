@@ -40,6 +40,7 @@ protected:
     double health_;
     double attack_time_;
     double armor_;
+    std::string hero_type_;
     hero & basic_level_up();
     virtual hero & level_up() = 0;
 public:
@@ -57,7 +58,8 @@ public:
         const double &damage,
         const double &health,
         const double &attack_time,
-        const double &armor)
+        const double &armor,
+        const std::string &type)
         :name_(name),
         id_(hero_cnt_),
         strength_(strength),
@@ -71,7 +73,8 @@ public:
         damage_(damage),
         health_(health),
         attack_time_(attack_time),
-        armor_(armor) {
+        armor_(armor),
+        hero_type_(type){
         ++hero_cnt_;
     }
     explicit hero(
@@ -91,6 +94,7 @@ public:
         attack_time_(basic_attack_time),
         armor_(0){
         ++hero_cnt_;
+        hero_type_ = type;
         strength_ += u_(e_);
         agility_ += u_(e_);
         intelligence_ += u_(e_);
@@ -111,6 +115,7 @@ public:
             intelligence_ += n_(e_);
             intelligence_growth_ += basic_main_properties_growth;
         }
+
     }
     hero(const hero&) = delete;
     hero& operator=(const hero&) = delete;
@@ -149,7 +154,8 @@ public:
         const double &damage,
         const double &health,
         const double &attack_time,
-        const double &armor)
+        const double &armor,
+        const std::string &type)
         :hero(
             std::move(name),
             strength,
@@ -163,7 +169,8 @@ public:
             damage,
             health,
             attack_time,
-            armor) {
+            armor,
+            type) {
     }
     hero & get_damage(attack_trajectory &trajectory) override;
     hero & generate_damage(attack_trajectory & trajectory) override;
@@ -190,7 +197,8 @@ public:
         const double &damage,
         const double &health,
         const double &attack_time,
-        const double &armor)
+        const double &armor,
+        const std::string type)
         :hero(
             std::move(name),
             strength,
@@ -204,7 +212,8 @@ public:
             damage,
             health,
             attack_time,
-            armor) {
+            armor,
+            type) {
     }
     hero & get_damage(attack_trajectory &trajectory) override;
     hero & generate_damage(attack_trajectory & trajectory) override;
@@ -231,7 +240,8 @@ public:
         const double &damage,
         const double &health,
         const double &attack_time,
-        const double &armor)
+        const double &armor,
+        const std::string &type)
         :hero(
             std::move(name),
             strength,
@@ -245,7 +255,8 @@ public:
             damage,
             health,
             attack_time,
-            armor) {
+            armor,
+            type) {
     }
     hero & get_damage(attack_trajectory &trajectory) override;
     hero & generate_damage(attack_trajectory & trajectory) override;
@@ -272,7 +283,8 @@ public:
         const double &damage,
         const double &health,
         const double &attack_time,
-        const double &armor)
+        const double &armor,
+        const std::string &type)
         :hero(
             std::move(name),
             strength,
@@ -286,7 +298,8 @@ public:
             damage,
             health,
             attack_time,
-            armor) {
+            armor,
+            type) {
     }
     hero & get_damage(attack_trajectory &trajectory) override;
     hero & generate_damage(attack_trajectory & trajectory) override;

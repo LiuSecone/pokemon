@@ -69,6 +69,8 @@ std::string hero::serialize_the_hero() const {
     serialization += std::to_string(attack_time_);
     serialization += ' ';
     serialization += std::to_string(armor_);
+    serialization += ' ';
+    serialization += hero_type_;
     return serialization;
 }
 
