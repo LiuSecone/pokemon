@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="attack_trajectory.h" />
     <ClInclude Include="hero.h" />
+    <ClInclude Include="my_algo_lib.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="user_client.h" />
     <ClInclude Include="user_server.h" />

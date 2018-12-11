@@ -35,12 +35,16 @@ private:
 
     std::vector<user_server> users_;
     std::vector<std::string> heros_;
-public:
-    server_terminal();
-    int init();
     int init_tcp();
     int init_users();
     int init_heros();
+    int login(const std::string & name, const std::string & hash);
+    bool signin(const std::string & name, const std::string & hash);
+
+public:
+    server_terminal();
+    int init();
+
     std::string process_request(const std::string &str);
     int run();
     int process_client_socket(const SOCKET client_socket);

@@ -138,9 +138,33 @@ int server_terminal::init_heros() {
     return 0;
 }
 
+int server_terminal::login(const std::string & name, const std::string & hash) {
+    for (auto iter = users_.begin(); iter != users_.end(); ++ iter) {
+        if (iter->user_name == name && iter->password_hash == hash) {
+            return users_.begin() - iter;
+        }
+    }
+    return -1;
+}
+
+bool server_terminal::signin(const std::string & name, const std::string & hash) {
+    auto name_used = false;
+    for (auto & user : users_) {
+        if (user.user_name == name) {
+            name_used = true;
+            break;
+        }
+    }
+    return true;
+}
+
 std::string server_terminal::process_request(const std::string &str) {
+    std::string replay_string;
+    if (str[0] == '0') {
+        replay_string = str;
+    }
     //TODO: process request
-    return str;
+    return replay_string;
 }
 
 int server_terminal::run() {
