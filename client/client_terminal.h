@@ -17,6 +17,8 @@
 #include <thread>
 #include <mutex>
 
+#include "../pokemon/hero.h"
+
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
 // #pragma comment (lib, "Mswsock.lib")
@@ -53,7 +55,11 @@ public:
     void login_or_signin();
     void logout_or_select_user();
     void select_hero();
-    std::string request(const std::string & str);
+    void show_detail_or_fight();
+    void duel_fight();
+    void upgrade_fight();
+    std::shared_ptr<hero> choose_opponent();
+    std::string post_request(const std::string & str);
     ~client_terminal();
 };
 

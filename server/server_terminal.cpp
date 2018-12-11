@@ -219,7 +219,7 @@ bool server_terminal::signin(const std::string & name, const std::string & hash)
                 new_hero.reset(new meat("new_hero"));
             }
             heroes_.push_back(new_hero->serialize_the_hero());
-            new_user.heroes.push_back(static_cast<int>(heroes_.size()));
+            new_user.heroes.push_back(static_cast<int>(heroes_.size() - 1));
         }
         users_.push_back(new_user);
     }
@@ -279,7 +279,7 @@ std::string server_terminal::process_request(const std::string &str) {
     auto need_save_heroes = false;
     auto request_vector = my_algo_lib::split(str, '/');
     if (request_vector.empty()) {
-        return "Empty request!";
+        return "Empty post_request!";
     }
     if (request_vector[0] == "login") {
         std::cout << request_vector.size() << std::endl;
@@ -348,16 +348,17 @@ std::string server_terminal::process_request(const std::string &str) {
             reply_string = "Get failed, too less or too many param.";
         }
         else {
-            reply_string = users_[std::stoi(request_vector[1])].heroes[std::stoi(request_vector[2])];
+            reply_string = heroes_[users_[std::stoi(request_vector[1])].heroes[std::stoi(request_vector[2])]];
         }
     }
-    //TODO: process request
+    //TODO: process post_request
     if (need_save_users) {
         save_users();
     }
     if (need_save_heroes) {
         save_heroes();
     }
+    std::cout << reply_string << std::endl;
     return reply_string;
 }
 
