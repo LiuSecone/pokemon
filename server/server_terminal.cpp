@@ -89,6 +89,7 @@ int server_terminal::init_users() {
             users_.push_back(user);
         }
         input.close();
+        std::cout << "Init users sucessful!" << std::endl;
     }
     else {
         std::cout << "Could not open the file: " << file_name;
@@ -128,6 +129,7 @@ int server_terminal::init_heros() {
             heros_.push_back(hero);
         }
         input.close();
+        std::cout << "Init heros sucessful!" << std::endl;
     }
     else {
         std::cout << "Could not open the file: " << file_name;
