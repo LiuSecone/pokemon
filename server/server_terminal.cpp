@@ -2,6 +2,7 @@
 
 #include "server_terminal.h"
 #include "../pokemon/hero.h"
+#include "../pokemon/my_algo_lib.h"
 
 server_terminal::server_terminal() {
     ZeroMemory(&hints_, sizeof(hints_));
@@ -160,8 +161,21 @@ bool server_terminal::signin(const std::string & name, const std::string & hash)
 
 std::string server_terminal::process_request(const std::string &str) {
     std::string replay_string;
-    if (str[0] == '0') {
-        replay_string = str;
+    auto request_vector = my_algo_lib::split(str, ' ');
+    if (request_vector.empty()) {
+        return "Empty request!";
+    }
+    if (request_vector[0] == "login") {
+        if (request_vector.size() != 3) {
+            replay_string = "Loging fialed, too less or too many param.";
+        }
+        auto login_reply = login(request_vector[1], request_vector[2]);
+        if (login_reply != -1) {
+            //TODO: reply the user info
+        }
+        else {
+            replay_string = "Wrong username or password.";
+        }
     }
     //TODO: process request
     return replay_string;
