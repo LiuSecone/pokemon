@@ -182,8 +182,6 @@ std::string client_terminal::request(const std::string & str) {
         return str;
     }
 
-    printf("Bytes Sent: %d\n", i_result);
-
     // shutdown the connection since no more data will be sent
     i_result = shutdown(connect_socket_, SD_SEND);
     if (i_result == SOCKET_ERROR) {
@@ -194,12 +192,9 @@ std::string client_terminal::request(const std::string & str) {
 
     // Receive
     i_result = recv(connect_socket_, recvbuf, default_buff_len, 0);
-    if (i_result > 0)
-        printf("Bytes received: %d\n", i_result);
-    else if (i_result == 0)
-        printf("Connection closed\n");
-    else
+    if (i_result < 0) {
         printf("recv failed with error: %d\n", WSAGetLastError());
+    }
     recvbuf[i_result] = '\0';
     return recvbuf;
 }
