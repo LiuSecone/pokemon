@@ -6,8 +6,6 @@ int main() {
     while (true) {
         std::string str;
         std::getline(std::cin, str);
-        auto elem = my_algo_lib::split(str, ' ');
-        std::cout << elem.size() << std::endl;
         const auto init_result = client.init();
         if (init_result) {
             std::cout << "TCP client init Error";

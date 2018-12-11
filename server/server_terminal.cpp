@@ -143,7 +143,7 @@ int server_terminal::save_users() {
     const std::string file_name = "users.txt";
     std::ofstream output(file_name);
     if (output.is_open()) {
-        output << users_.size();
+        output << users_.size() << std::endl;
         for (auto &user : users_) {
             output << user.serialize_the_user() << std::endl;
         }
@@ -189,10 +189,7 @@ int server_terminal::login(const std::string & name, const std::string & hash) {
 }
 
 void server_terminal::logout(const size_t & user_idx) {
-    if (users_[user_idx].online) {
-        users_[user_idx].online = false;
-    }
-    return;
+    users_[user_idx].online = false;
 }
 
 bool server_terminal::signin(const std::string & name, const std::string & hash) {
@@ -228,6 +225,30 @@ bool server_terminal::signin(const std::string & name, const std::string & hash)
     return !name_used_flag;
 }
 
+std::string server_terminal::get_all_users() {
+    std::string all_users;
+    for (auto iter = users_.begin(); iter != users_.end(); ++iter) {
+        all_users += std::to_string(iter - users_.begin());
+        all_users += ' ';
+        all_users += iter->user_name;
+        all_users += ' ';
+    }
+    return all_users;
+}
+
+std::string server_terminal::get_all_online_users() {
+    std::string all_users;
+    for (auto iter = users_.begin(); iter != users_.end(); ++iter) {
+        if (iter->online) {
+            all_users += std::to_string(iter - users_.begin());
+            all_users += ' ';
+            all_users += iter->user_name;
+            all_users += ' ';
+        }
+    }
+    return all_users;
+}
+
 std::string server_terminal::process_request(const std::string &str) {
     std::string reply_string;
     auto need_save_users = false;
@@ -253,7 +274,17 @@ std::string server_terminal::process_request(const std::string &str) {
             reply_string = "Already logged in.";
         }
     }
+    if (request_vector[0] == "logout") {
+        if (request_vector.size() != 2) {
+            reply_string = "Logout failed, too less or too many param.";
+        }
+        logout(std::stoi(request_vector[1]));
+        reply_string = "Successful!";
+    }
     if (request_vector[0] == "signin") {
+        if (request_vector.size() != 3) {
+            reply_string = "Login failed, too less or too many param.";
+        }
         const auto signin_reply = signin(request_vector[1], request_vector[2]);
         if (signin_reply) {
             reply_string = "Successful!";
@@ -264,6 +295,25 @@ std::string server_terminal::process_request(const std::string &str) {
             reply_string = "Used username.";
         }
     }
+    if (request_vector[0] == "get_all_user") {
+        reply_string = get_all_users();
+    }
+    if (request_vector[0] == "get_all_online_user") {
+        reply_string = get_all_users();
+    }
+    if (request_vector[0] == "get_ith_user_heroes") {
+        if (request_vector.size() != 2) {
+            reply_string = "Get failed, too less or too many param.";
+        }
+        reply_string = std::to_string(users_[std::stoi(request_vector[1])].heroes.size());
+    }
+    if (request_vector[0] == "get_ith_user_ith_hero") {
+        if (request_vector.size() != 3) {
+            reply_string = "Get failed, too less or too many param.";
+        }
+        reply_string = users_[std::stoi(request_vector[1])].heroes[std::stoi(request_vector[2])];
+    }
+    if
     //TODO: process request
     if (need_save_users) {
         save_users();

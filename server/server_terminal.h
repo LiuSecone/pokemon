@@ -47,7 +47,8 @@ private:
     int login(const std::string & name, const std::string & hash);
     void logout(const size_t & user_idx);
     bool signin(const std::string & name, const std::string & hash);
-
+    std::string get_all_users();
+    std::string get_all_online_users();
 public:
     server_terminal();
     int init();
