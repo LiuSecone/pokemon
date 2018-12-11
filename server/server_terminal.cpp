@@ -230,7 +230,7 @@ std::string server_terminal::get_all_heroes() {
     std::string all_heroes;
     for (auto iter = heroes_.begin(); iter != heroes_.end(); ++ iter) {
         all_heroes += std::to_string(iter - heroes_.begin());
-        all_heroes += ' ';
+        all_heroes += '-';
         all_heroes += my_algo_lib::split(*iter, ' ')[0];
         all_heroes += ' ';
     }
@@ -241,7 +241,7 @@ std::string server_terminal::get_all_users() {
     std::string all_users;
     for (auto iter = users_.begin(); iter != users_.end(); ++iter) {
         all_users += std::to_string(iter - users_.begin());
-        all_users += ' ';
+        all_users += '-';
         all_users += iter->user_name;
         all_users += ' ';
     }
@@ -253,7 +253,7 @@ std::string server_terminal::get_all_online_users() {
     for (auto iter = users_.begin(); iter != users_.end(); ++iter) {
         if (iter->online) {
             all_users += std::to_string(iter - users_.begin());
-            all_users += ' ';
+            all_users += '-';
             all_users += iter->user_name;
             all_users += ' ';
         }
@@ -266,7 +266,7 @@ std::string server_terminal::get_ith_user_heroes(const int & ith) {
     auto hero_ids = users_[ith].heroes;
     for (auto & hero_id : hero_ids) {
         all_heroes += std::to_string(hero_id);
-        all_heroes += ' ';
+        all_heroes += '-';
         all_heroes += my_algo_lib::split(heroes_[hero_id], ' ')[0];
         all_heroes += ' ';
     }

@@ -21,6 +21,16 @@
 #pragma comment (lib, "Ws2_32.lib")
 // #pragma comment (lib, "Mswsock.lib")
 
+enum class state {
+    not_login,
+    logged,
+    select_user,
+    select_hero,
+    duel,
+    upgrade,
+};
+
+
 class client_terminal {
 private:
     static constexpr int default_buff_len = 512;
