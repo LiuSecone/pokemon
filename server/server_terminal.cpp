@@ -81,7 +81,7 @@ int server_terminal::init_users() {
             std::string password_hash;
             auto number_of_heros = 0;
             input >> user_name >> password_hash >> number_of_heros;
-            user_server user(std::move(user_name), std::move(password_hash));
+            user_server user(user_name, password_hash);
             for (auto i = 0; i != number_of_heros; ++i) {
                 auto hero_number = 0;
                 input >> hero_number;
@@ -149,14 +149,17 @@ int server_terminal::login(const std::string & name, const std::string & hash) {
 }
 
 bool server_terminal::signin(const std::string & name, const std::string & hash) {
-    auto name_used = false;
+    auto name_used_flag = false;
     for (auto & user : users_) {
         if (user.user_name == name) {
-            name_used = true;
+            name_used_flag = true;
             break;
         }
     }
-    return true;
+    if (!name_used_flag) {
+        user_server new_user(name, hash);
+    }
+    return name_used_flag;
 }
 
 std::string server_terminal::process_request(const std::string &str) {
@@ -167,11 +170,11 @@ std::string server_terminal::process_request(const std::string &str) {
     }
     if (request_vector[0] == "login") {
         if (request_vector.size() != 3) {
-            replay_string = "Loging fialed, too less or too many param.";
+            replay_string = "Login failed, too less or too many param.";
         }
-        auto login_reply = login(request_vector[1], request_vector[2]);
+        const auto login_reply = login(request_vector[1], request_vector[2]);
         if (login_reply != -1) {
-            //TODO: reply the user info
+            replay_string = "Successful!";
         }
         else {
             replay_string = "Wrong username or password.";
