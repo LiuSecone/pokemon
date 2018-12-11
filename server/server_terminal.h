@@ -17,6 +17,7 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <random>
 
 #include "../pokemon/user_server.h"
 
@@ -33,12 +34,18 @@ private:
     struct addrinfo *result_ = nullptr;
     struct addrinfo hints_;
 
+    static std::default_random_engine e_;
+    static std::uniform_int_distribution<int> u_;
+
     std::vector<user_server> users_;
     std::vector<std::string> heroes_;
     int init_tcp();
     int init_users();
     int init_heroes();
+    int save_users();
+    int save_heroes();
     int login(const std::string & name, const std::string & hash);
+    void logout(const size_t & user_idx);
     bool signin(const std::string & name, const std::string & hash);
 
 public:

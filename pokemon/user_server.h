@@ -12,6 +12,7 @@ public:
     const std::string password_hash;
     std::vector<int> heroes;
     bool online = false;
+    std::string serialize_the_user() const;
     explicit user_server(const std::string &name, const std::string &hash) :
     user_name(name),
     password_hash(hash) {

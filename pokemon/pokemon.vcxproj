@@ -124,6 +124,7 @@
   <ItemGroup>
     <ClCompile Include="hero.cpp" />
     <ClCompile Include="pokemon.cpp" />
+    <ClCompile Include="user_server.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

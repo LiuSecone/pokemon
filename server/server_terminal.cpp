@@ -139,13 +139,60 @@ int server_terminal::init_heroes() {
     return 0;
 }
 
+int server_terminal::save_users() {
+    const std::string file_name = "users.txt";
+    std::ofstream output(file_name);
+    if (output.is_open()) {
+        output << users_.size();
+        for (auto &user : users_) {
+            output << user.serialize_the_user() << std::endl;
+        }
+        output.close();
+        std::cout << "Save users successful!" << std::endl;
+    }
+    else {
+        std::cout << "Could not open the file: " << file_name;
+        return 1;
+    }
+    return 0;
+}
+
+int server_terminal::save_heroes() {
+    const std::string file_name = "heroes.txt";
+    std::ofstream output(file_name);
+    if (output.is_open()) {
+        output << heroes_.size() << std::endl;
+        for (auto &hero : heroes_) {
+            output << hero << std::endl;
+        }
+        output.close();
+        std::cout << "Save users successful!" << std::endl;
+    }
+    else {
+        std::cout << "Could not open the file: " << file_name;
+        return 1;
+    }
+    return 0;
+}
+
 int server_terminal::login(const std::string & name, const std::string & hash) {
     for (auto iter = users_.begin(); iter != users_.end(); ++ iter) {
         if (iter->user_name == name && iter->password_hash == hash) {
+            if (iter->online) {
+                return -2;
+            }
+            iter->online = true;
             return static_cast<int>(users_.begin() - iter);
         }
     }
     return -1;
+}
+
+void server_terminal::logout(const size_t & user_idx) {
+    if (users_[user_idx].online) {
+        users_[user_idx].online = false;
+    }
+    return;
 }
 
 bool server_terminal::signin(const std::string & name, const std::string & hash) {
@@ -158,30 +205,73 @@ bool server_terminal::signin(const std::string & name, const std::string & hash)
     }
     if (!name_used_flag) {
         user_server new_user(name, hash);
+        for (auto i = 0; i != 3; ++i) {
+            std::shared_ptr<hero> new_hero = nullptr;
+            const auto random_val = u_(e_);
+            if (random_val == 0) {
+                new_hero.reset(new power("system"));
+            }
+            if (random_val == 1) {
+                new_hero.reset(new agile("system"));
+            }
+            if (random_val == 2) {
+                new_hero.reset(new intellectual("system"));
+            }
+            if (random_val == 3) {
+                new_hero.reset(new meat("system"));
+            }
+            heroes_.push_back(new_hero->serialize_the_hero());
+            new_user.heroes.push_back(static_cast<int>(heroes_.size()));
+        }
+        users_.push_back(new_user);
     }
-    return name_used_flag;
+    return !name_used_flag;
 }
 
 std::string server_terminal::process_request(const std::string &str) {
-    std::string replay_string;
+    std::string reply_string;
+    auto need_save_users = false;
+    auto need_save_heroes = false;
     auto request_vector = my_algo_lib::split(str, ' ');
     if (request_vector.empty()) {
         return "Empty request!";
     }
     if (request_vector[0] == "login") {
         if (request_vector.size() != 3) {
-            replay_string = "Login failed, too less or too many param.";
+            reply_string = "Login failed, too less or too many param.";
         }
         const auto login_reply = login(request_vector[1], request_vector[2]);
-        if (login_reply != -1) {
-            replay_string = "Successful!";
+        if (login_reply >= 0) {
+            reply_string = "Successful!";
+            reply_string += ' ';
+            reply_string += std::to_string(login_reply);
+        }
+        if (login_reply == -1) {
+            reply_string = "Wrong username or password.";
+        }
+        if (login_reply == -2) {
+            reply_string = "Already logged in.";
+        }
+    }
+    if (request_vector[0] == "signin") {
+        const auto signin_reply = signin(request_vector[1], request_vector[2]);
+        if (signin_reply) {
+            reply_string = "Successful!";
+            need_save_heroes = true;
+            need_save_users = true;
         }
         else {
-            replay_string = "Wrong username or password.";
+            reply_string = "Used username.";
         }
     }
     //TODO: process request
-    return replay_string;
+    if (need_save_users) {
+        save_users();
+    }
+    if (need_save_heroes) {
+        save_heroes();
+    }
+    return reply_string;
 }
 
 int server_terminal::run() {
@@ -248,3 +338,6 @@ server_terminal::~server_terminal() {
     closesocket(listen_socket_);
     WSACleanup();
 }
+
+std::default_random_engine server_terminal::e_;
+std::uniform_int_distribution<int> server_terminal::u_(0, 3);
