@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../pokemon/hero.h"
+#include "../pokemon/my_algo_lib.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -46,6 +47,12 @@ namespace tests
             const auto health = psk->get_health();
             psk->get_damage(trajectory);
             Assert::AreNotEqual(health, psk->get_health());
+        }
+
+        TEST_METHOD(split) {
+            std::string str = "2134 213465 462grsg 54ywg";
+            auto elem = my_algo_lib::split(str, ' ');
+            Assert::AreEqual(std::size_t(4), elem.size());
         }
     };
 }
