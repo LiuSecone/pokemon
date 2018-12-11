@@ -232,7 +232,7 @@ std::string server_terminal::get_all_heroes() {
         all_heroes += std::to_string(iter - heroes_.begin());
         all_heroes += '-';
         all_heroes += my_algo_lib::split(*iter, ' ')[0];
-        all_heroes += ' ';
+        all_heroes += '\n';
     }
     return all_heroes;
 }
@@ -243,7 +243,7 @@ std::string server_terminal::get_all_users() {
         all_users += std::to_string(iter - users_.begin());
         all_users += '-';
         all_users += iter->user_name;
-        all_users += ' ';
+        all_users += '\n';
     }
     return all_users;
 }
@@ -255,7 +255,7 @@ std::string server_terminal::get_all_online_users() {
             all_users += std::to_string(iter - users_.begin());
             all_users += '-';
             all_users += iter->user_name;
-            all_users += ' ';
+            all_users += '\n';
         }
     }
     return all_users;
@@ -268,7 +268,7 @@ std::string server_terminal::get_ith_user_heroes(const int & ith) {
         all_heroes += std::to_string(hero_id);
         all_heroes += '-';
         all_heroes += my_algo_lib::split(heroes_[hero_id], ' ')[0];
-        all_heroes += ' ';
+        all_heroes += '\n';
     }
     return all_heroes;
 }
@@ -277,7 +277,7 @@ std::string server_terminal::process_request(const std::string &str) {
     std::string reply_string;
     auto need_save_users = false;
     auto need_save_heroes = false;
-    auto request_vector = my_algo_lib::split(str, ' ');
+    auto request_vector = my_algo_lib::split(str, '/');
     if (request_vector.empty()) {
         return "Empty request!";
     }
@@ -332,7 +332,7 @@ std::string server_terminal::process_request(const std::string &str) {
     if (request_vector[0] == "get_all_users") {
         reply_string = get_all_users();
     }
-    if (request_vector[0] == "get_all_online_user") {
+    if (request_vector[0] == "get_all_online_users") {
         reply_string = get_all_online_users();
     }
     if (request_vector[0] == "get_ith_user_heroes") {

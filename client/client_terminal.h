@@ -24,8 +24,8 @@
 enum class state {
     not_login,
     logged,
-    select_user,
-    select_hero,
+    view_user,
+    view_hero,
     duel,
     upgrade,
 };
@@ -39,9 +39,20 @@ private:
 
     struct addrinfo *result_ = nullptr;
     struct addrinfo hints_;
+
+    state state_ = state::not_login;
+
+    bool exit_flag_ = false;
+    int user_id_ = -1;
+    int viewing_user_ = -1;
+    int viewing_hero_ = -1;
 public:
     client_terminal();
     int init();
+    int run();
+    void login_or_signin();
+    void logout_or_select_user();
+    void select_hero();
     std::string request(const std::string & str);
     ~client_terminal();
 };
