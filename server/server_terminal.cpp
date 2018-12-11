@@ -17,7 +17,7 @@ int server_terminal::init() {
     if (return_val) {
         return return_val;
     }
-    return_val = init_heros();
+    return_val = init_heroes();
     if (return_val) {
         return return_val;
     }
@@ -36,7 +36,7 @@ int server_terminal::init_tcp() {
         return 1;
     }
     // Resolve the server address and port
-    i_result = getaddrinfo(nullptr, default_prot, &hints_, &result_);
+    i_result = getaddrinfo(nullptr, default_port, &hints_, &result_);
     if (i_result != 0) {
         printf("getaddrinfo failed with error: %d\n", i_result);
         return 1;
@@ -99,13 +99,13 @@ int server_terminal::init_users() {
     return 0;
 }
 
-int server_terminal::init_heros() {
+int server_terminal::init_heroes() {
     const std::string file_name = "heros.txt";
     std::ifstream input(file_name);
     if (input.is_open()) {
-        int number_of_heros;
-        input >> number_of_heros;
-        for (auto i = 0; i != number_of_heros; ++i) {
+        int number_of_heroes;
+        input >> number_of_heroes;
+        for (auto i = 0; i != number_of_heroes; ++i) {
             /*
             std::string hero_type;
             std::string name;
@@ -127,7 +127,7 @@ int server_terminal::init_heros() {
             */
             std::string hero;
             std::getline(input, hero);
-            heros_.push_back(hero);
+            heroes_.push_back(hero);
         }
         input.close();
         std::cout << "Init heros sucessful!" << std::endl;
@@ -142,7 +142,7 @@ int server_terminal::init_heros() {
 int server_terminal::login(const std::string & name, const std::string & hash) {
     for (auto iter = users_.begin(); iter != users_.end(); ++ iter) {
         if (iter->user_name == name && iter->password_hash == hash) {
-            return users_.begin() - iter;
+            return static_cast<int>(users_.begin() - iter);
         }
     }
     return -1;

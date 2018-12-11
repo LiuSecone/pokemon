@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{5EE2BFBE-6E33-4750-8DF1-EC84A762AC4E}</ProjectGuid>
+    <ProjectGuid>{DBBA440B-CEE3-4871-AE91-17256B52BFCE}</ProjectGuid>
     <RootNamespace>server</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -115,11 +115,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="server_terminal.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="server.cpp" />
     <ClCompile Include="server_terminal.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="server_terminal.h" />
+    <ProjectReference Include="..\pokemon\pokemon.vcxproj">
+      <Project>{ca132f5d-a847-4e6f-91a0-9b9653bf662d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

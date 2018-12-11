@@ -122,6 +122,7 @@ public:
     static std::size_t set_hero_cnt(const std::size_t &cnt);
     double get_health() const;
     hero & gain_exp(const std::size_t &exp);
+    std::string serialize_the_hero() const;
     virtual hero & get_damage(attack_trajectory &trajectory) = 0;
     virtual hero & generate_damage(attack_trajectory & trajectory) = 0;
     virtual ~hero() = default;

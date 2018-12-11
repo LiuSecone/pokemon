@@ -27,17 +27,17 @@
 class server_terminal {
 private:
     static constexpr int default_buff_len = 512;
-    static constexpr char default_prot[] = "60000";
+    static constexpr char default_port[] = "60000";
     SOCKET listen_socket_ = INVALID_SOCKET;
 
     struct addrinfo *result_ = nullptr;
     struct addrinfo hints_;
 
     std::vector<user_server> users_;
-    std::vector<std::string> heros_;
+    std::vector<std::string> heroes_;
     int init_tcp();
     int init_users();
-    int init_heros();
+    int init_heroes();
     int login(const std::string & name, const std::string & hash);
     bool signin(const std::string & name, const std::string & hash);
 

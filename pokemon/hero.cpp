@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "hero.h"
 
 hero & hero::basic_level_up() {
@@ -42,6 +41,35 @@ hero & hero::gain_exp(const std::size_t & exp) {
         exp_ -= max_exp;
     }
     return *this;
+}
+
+std::string hero::serialize_the_hero() const {
+    auto serialization = name_;
+    serialization += ' ';
+    serialization += std::to_string(strength_);
+    serialization += ' ';
+    serialization += std::to_string(agility_);
+    serialization += ' ';
+    serialization += std::to_string(intelligence_);
+    serialization += ' ';
+    serialization += std::to_string(strength_growth_);
+    serialization += ' ';
+    serialization += std::to_string(agility_growth_);
+    serialization += ' ';
+    serialization += std::to_string(intelligence_growth_);
+    serialization += ' ';
+    serialization += std::to_string(level_);
+    serialization += ' ';
+    serialization += std::to_string(exp_);
+    serialization += ' ';
+    serialization += std::to_string(damage_);
+    serialization += ' ';
+    serialization += std::to_string(health_);
+    serialization += ' ';
+    serialization += std::to_string(attack_time_);
+    serialization += ' ';
+    serialization += std::to_string(armor_);
+    return serialization;
 }
 
 hero & power::level_up() {
