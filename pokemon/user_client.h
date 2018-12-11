@@ -10,7 +10,7 @@
 class user_client {
 public:
     const std::string user_name;
-    std::vector<std::shared_ptr<hero>> heros;
+    std::vector<std::shared_ptr<hero>> heroes;
     explicit user_client(std::string &&name) :user_name(name) {}
 };
 

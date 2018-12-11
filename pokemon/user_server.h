@@ -10,7 +10,7 @@ class user_server {
 public:
     const std::string user_name;
     const std::string password_hash;
-    std::vector<int> heros;
+    std::vector<int> heroes;
     bool online = false;
     explicit user_server(std::string &&name, std::string &&hash) :
     user_name(name),

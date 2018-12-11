@@ -16,7 +16,7 @@ int client_terminal::init() {
         return 1;
     }
     // Resolve the server address and port
-    i_result = getaddrinfo("127.0.0.1", default_prot, &hints_, &result_);
+    i_result = getaddrinfo("127.0.0.1", default_port, &hints_, &result_);
     if (i_result != 0) {
         printf("getaddrinfo failed with error: %d\n", i_result);
         return 1;

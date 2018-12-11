@@ -85,12 +85,12 @@ int server_terminal::init_users() {
             for (auto i = 0; i != number_of_heros; ++i) {
                 auto hero_number = 0;
                 input >> hero_number;
-                user.heros.push_back(hero_number);
+                user.heroes.push_back(hero_number);
             }
             users_.push_back(user);
         }
         input.close();
-        std::cout << "Init users sucessful!" << std::endl;
+        std::cout << "Init users successful!" << std::endl;
     }
     else {
         std::cout << "Could not open the file: " << file_name;
@@ -100,7 +100,7 @@ int server_terminal::init_users() {
 }
 
 int server_terminal::init_heroes() {
-    const std::string file_name = "heros.txt";
+    const std::string file_name = "heroes.txt";
     std::ifstream input(file_name);
     if (input.is_open()) {
         int number_of_heroes;
@@ -130,7 +130,7 @@ int server_terminal::init_heroes() {
             heroes_.push_back(hero);
         }
         input.close();
-        std::cout << "Init heros sucessful!" << std::endl;
+        std::cout << "Init heroes successful!" << std::endl;
     }
     else {
         std::cout << "Could not open the file: " << file_name;

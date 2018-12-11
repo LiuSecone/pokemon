@@ -24,7 +24,7 @@
 class client_terminal {
 private:
     static constexpr int default_buff_len = 512;
-    static constexpr char default_prot[] = "60000";
+    static constexpr char default_port[] = "60000";
     SOCKET connect_socket_ = INVALID_SOCKET;
 
     struct addrinfo *result_ = nullptr;
