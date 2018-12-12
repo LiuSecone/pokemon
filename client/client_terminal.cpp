@@ -219,6 +219,10 @@ void client_terminal::duel_fight() {
         gained_exp /= cur_hero->get_level() - opponent->get_level();
         gained_exp /= cur_hero->get_level();
         cur_hero->gain_exp(gained_exp);
+        get_a_hero(opponent);
+    }
+    else {
+        lost_a_hero();
     }
     state_ = state::view_hero;
 }
@@ -235,6 +239,16 @@ void client_terminal::upgrade_fight() {
         cur_hero->gain_exp(gained_exp);
     }
     state_ = state::view_hero;
+}
+
+void client_terminal::get_a_hero(const std::shared_ptr<hero>& hero) {
+    std::string request_string = "ith_user_get_a_hero/";
+    request_string += std::to_string(user_id_);
+    request_string += '/';
+    request_string += hero->serialize_the_hero();
+}
+
+void client_terminal::lost_a_hero() {
 }
 
 int client_terminal::fight_and_get_winner(const std::shared_ptr<hero> &h1, const std::shared_ptr<hero> &h2) {
