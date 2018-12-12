@@ -214,19 +214,33 @@ void client_terminal::duel_fight() {
     const auto opponent = choose_opponent();
     const auto winner = fight_and_get_winner(cur_hero, opponent);
     std::cout << winner << std::endl;
+    if (winner == 0) {
+        size_t gained_exp = 1000;
+        gained_exp /= cur_hero->get_level() - opponent->get_level();
+        gained_exp /= cur_hero->get_level();
+        cur_hero->gain_exp(gained_exp);
+    }
     state_ = state::view_hero;
 }
 
 void client_terminal::upgrade_fight() {
-    auto opponent = choose_opponent();
+    const auto cur_hero = get_selected_hero();
+    const auto opponent = choose_opponent();
+    const auto winner = fight_and_get_winner(cur_hero, opponent);
+    std::cout << winner << std::endl;
+    if (winner == 0) {
+        size_t gained_exp = 200;
+        gained_exp /= cur_hero->get_level() - opponent->get_level();
+        gained_exp /= cur_hero->get_level();
+        cur_hero->gain_exp(gained_exp);
+    }
     state_ = state::view_hero;
 }
 
 int client_terminal::fight_and_get_winner(const std::shared_ptr<hero> &h1, const std::shared_ptr<hero> &h2) {
     auto attack_flag = false;
-    std::cout << h1->get_health() << '/' << h2->get_health() << std::endl;
     while (h1->get_health() != 0 && h2->get_health() != 0) {
-        std::cout << h1->get_health() << ' ' << h2->get_health() << std::endl;
+        std::cout << h1->get_health() << '/' << h2->get_health() << std::endl;
         if (attack_flag) {
             attack_trajectory trajectory;
             h1->generate_damage(trajectory);
