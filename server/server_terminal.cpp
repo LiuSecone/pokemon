@@ -352,6 +352,26 @@ std::string server_terminal::process_request(const std::string &str) {
             reply_string = heroes_[users_[std::stoi(request_vector[1])].heroes[std::stoi(request_vector[2])]];
         }
     }
+    if (request_vector[0] == "get_hero") {
+        if (request_vector.size() != 3) {
+            reply_string = "Get failed, too less or too many param.";
+        }
+        else {
+            heroes_.push_back(request_vector[2]);
+            users_[std::stoi(request_vector[1])].heroes.push_back(static_cast<int>(heroes_.size() - 1));
+            reply_string = "Successful!";
+        }
+    }
+    if (request_vector[0] == "ith_user_lost_a_hero") {
+        if (request_vector.size() != 3) {
+            reply_string = "Lost failed, too less or too many param.";
+        }
+        else {
+            auto & heroes = users_[std::stoi(request_vector[1])].heroes;
+            heroes.erase(heroes.begin() + std::stoi(request_vector[2]));
+            reply_string = "Successful!";
+        }
+    }
     //TODO: process post_request
     if (need_save_users) {
         save_users();

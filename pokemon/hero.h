@@ -16,7 +16,7 @@ protected:
     static constexpr double basic_main_properties_growth = 2;
     static constexpr double basic_damage = 10;
     static constexpr double basic_health = 100;
-    static constexpr double basic_attack_time = 1.2;
+    static constexpr int basic_attack_time = 10;
     static constexpr double basic_armor = 0;
     static constexpr double armor_count_factor = 0.05;
     static constexpr double remote_attack_miss_prohibit = 0.05;
@@ -38,7 +38,7 @@ protected:
     std::size_t exp_;
     double damage_;
     double health_;
-    double attack_time_;
+    int attack_time_;
     double armor_;
     std::string hero_type_;
     hero & basic_level_up();
@@ -57,7 +57,7 @@ public:
         const std::size_t &exp,
         const double &damage,
         const double &health,
-        const double &attack_time,
+        const int &attack_time,
         const double &armor,
         const std::string &type)
         :name_(name),
@@ -153,7 +153,7 @@ public:
         const std::size_t &exp,
         const double &damage,
         const double &health,
-        const double &attack_time,
+        const int &attack_time,
         const double &armor,
         const std::string &type)
         :hero(
@@ -196,7 +196,7 @@ public:
         const std::size_t &exp,
         const double &damage,
         const double &health,
-        const double &attack_time,
+        const int &attack_time,
         const double &armor,
         const std::string &type)
         :hero(
@@ -239,7 +239,7 @@ public:
         const std::size_t &exp,
         const double &damage,
         const double &health,
-        const double &attack_time,
+        const int &attack_time,
         const double &armor,
         const std::string &type)
         :hero(
@@ -282,7 +282,7 @@ public:
         const std::size_t &exp,
         const double &damage,
         const double &health,
-        const double &attack_time,
+        const int &attack_time,
         const double &armor,
         const std::string &type)
         :hero(

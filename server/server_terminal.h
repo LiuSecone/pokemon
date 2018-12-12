@@ -27,7 +27,7 @@
 
 class server_terminal {
 private:
-    static constexpr int default_buff_len = 512;
+    static constexpr int default_buff_len = 2048;
     static constexpr char default_port[] = "60000";
     SOCKET listen_socket_ = INVALID_SOCKET;
 

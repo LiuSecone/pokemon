@@ -215,16 +215,18 @@ void client_terminal::duel_fight() {
     const auto winner = fight_and_get_winner(cur_hero, opponent);
     std::cout << winner << std::endl;
     if (winner == 0) {
-        size_t gained_exp = 1000;
-        gained_exp /= cur_hero->get_level() - opponent->get_level();
+        size_t gained_exp = 2000;
+        gained_exp /= cur_hero->get_level() - opponent->get_level() + 1;
         gained_exp /= cur_hero->get_level();
         cur_hero->gain_exp(gained_exp);
+        std::cout << "get_a_hero" << std::endl;
         get_a_hero(opponent);
     }
     else {
+        std::cout << "lost_a_hero" << std::endl;
         lost_a_hero();
     }
-    state_ = state::view_hero;
+    state_ = state::view_user;
 }
 
 void client_terminal::upgrade_fight() {
@@ -234,21 +236,31 @@ void client_terminal::upgrade_fight() {
     std::cout << winner << std::endl;
     if (winner == 0) {
         size_t gained_exp = 200;
-        gained_exp /= cur_hero->get_level() - opponent->get_level();
+        gained_exp /= cur_hero->get_level() - opponent->get_level() + 1;
         gained_exp /= cur_hero->get_level();
         cur_hero->gain_exp(gained_exp);
     }
-    state_ = state::view_hero;
+    state_ = state::view_user;
 }
 
 void client_terminal::get_a_hero(const std::shared_ptr<hero>& hero) {
-    std::string request_string = "ith_user_get_a_hero/";
+    std::string request_string;
+    request_string += "get_hero/";
     request_string += std::to_string(user_id_);
     request_string += '/';
-    request_string += hero->serialize_the_hero();
+    const auto temp_string = hero->serialize_the_hero();
+    request_string += temp_string;
+    const auto reply_string = post_request(request_string);
+    std::cout << reply_string << std::endl;
 }
 
 void client_terminal::lost_a_hero() {
+    std::string request_string = "ith_user_lost_a_hero/";
+    request_string += std::to_string(user_id_);
+    request_string += '/';
+    request_string += std::to_string(viewing_hero_);
+    const auto reply_string = post_request(request_string);
+    std::cout << reply_string << std::endl;
 }
 
 int client_terminal::fight_and_get_winner(const std::shared_ptr<hero> &h1, const std::shared_ptr<hero> &h2) {
