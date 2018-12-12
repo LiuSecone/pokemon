@@ -79,14 +79,18 @@ int server_terminal::init_users() {
         for (auto i = 0; i != number_of_users; ++i) {
             std::string user_name;
             std::string password_hash;
-            auto number_of_heros = 0;
-            input >> user_name >> password_hash >> number_of_heros;
+            auto number_of_heroes = 0;
+            input >> user_name >> password_hash >> number_of_heroes;
             user_server user(user_name, password_hash);
-            for (auto i = 0; i != number_of_heros; ++i) {
+            for (auto i = 0; i != number_of_heroes; ++i) {
                 auto hero_number = 0;
                 input >> hero_number;
                 user.heroes.push_back(hero_number);
             }
+            std::size_t win, all;
+            input >> win >> all;
+            user.win = win;
+            user.all = all;
             users_.push_back(user);
         }
         input.close();
@@ -370,6 +374,14 @@ std::string server_terminal::process_request(const std::string &str) {
             auto & heroes = users_[std::stoi(request_vector[1])].heroes;
             heroes.erase(heroes.begin() + std::stoi(request_vector[2]));
             reply_string = "Successful!";
+        }
+    }
+    if (request_vector[0] == "get_ith_user_info") {
+        if (request_vector.size() != 2) {
+            reply_string = "Get failed, too less or too many param.";
+        }
+        else {
+            reply_string = users_[std::stoi(request_vector[1])].serialize_the_user();
         }
     }
     //TODO: process post_request

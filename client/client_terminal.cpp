@@ -156,6 +156,7 @@ void client_terminal::select_hero() {
     int ans;
     std::cout << "1.view all hero" << std::endl
         << "2.select a hero" << std::endl
+        << "3.see user info" << std::endl
         << "0.back to select user" << std::endl;
     std::cin >> ans;
     if (ans == 1) {
@@ -170,6 +171,12 @@ void client_terminal::select_hero() {
         std::cin >> selected_id;
         viewing_hero_ = selected_id;
         state_ = state::view_hero;
+    }
+    if (ans == 3) {
+        request_string += "get_ith_user_info/";
+        request_string += std::to_string(viewing_user_);
+        const auto reply_string = post_request(request_string);
+        std::cout << reply_string << std::endl;
     }
     if (ans == 0) {
         state_ = state::logged;

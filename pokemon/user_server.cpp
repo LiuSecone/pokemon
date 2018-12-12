@@ -10,5 +10,9 @@ std::string user_server::serialize_the_user() const {
         serialization += ' ';
         serialization += std::to_string(heroes[i]);
     }
+    serialization += ' ';
+    serialization += std::to_string(win);
+    serialization += ' ';
+    serialization += std::to_string(all);
     return serialization;
 }
