@@ -11,14 +11,16 @@ namespace tests
     {
     public:
         TEST_METHOD(init) {
-            const std::shared_ptr<hero> ppa(new agile("PA"));
+            std::string pa = "PA";
+            const std::shared_ptr<hero> ppa(new agile(pa));
             Assert::AreNotEqual(double(0), ppa->get_health());
             Assert::AreEqual(std::size_t(0), ppa->get_exp());
             Assert::AreEqual(std::size_t(1), ppa->get_level());
         }
 
         TEST_METHOD(gain_exp) {
-            std::shared_ptr<hero> ppa(new agile("PA"));
+            std::string pa = "PA";
+            const std::shared_ptr<hero> ppa(new agile(pa));
             const auto health = ppa->get_health();
             Assert::AreEqual(std::size_t(0), ppa->get_exp());
             ppa->gain_exp(500);
@@ -40,8 +42,10 @@ namespace tests
         }
 
         TEST_METHOD(generate_damage_test) {
-            std::shared_ptr<hero> ppa(new agile("PA"));
-            std::shared_ptr<hero> psk(new power("SK"));
+            std::string pa = "PA";
+            const std::shared_ptr<hero> ppa(new agile(pa));
+            std::string sk = "SK";
+            std::shared_ptr<hero> psk(new power(sk));
             attack_trajectory trajectory;
             ppa->generate_damage(trajectory);
             const auto health = psk->get_health();

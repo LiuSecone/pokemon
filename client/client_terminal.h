@@ -58,6 +58,7 @@ public:
     void show_detail_or_fight();
     void duel_fight();
     void upgrade_fight();
+    int fight_and_get_winner(const std::shared_ptr<hero> &h1, const std::shared_ptr<hero> &h2);
     std::shared_ptr<hero> get_selected_hero();
     std::shared_ptr<hero> choose_opponent();
     std::string post_request(const std::string & str);

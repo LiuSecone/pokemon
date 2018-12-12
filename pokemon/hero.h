@@ -46,7 +46,7 @@ protected:
 public:
     hero() = delete;
     explicit hero(
-        std::string &&name,
+        const std::string &name,
         const double &strength,
         const double &agility,
         const double &intelligence,
@@ -78,7 +78,7 @@ public:
         ++hero_cnt_;
     }
     explicit hero(
-        std::string &&name,
+        const std::string &name,
         const std::string &type)
         :name_(name),
         id_(hero_cnt_),
@@ -138,11 +138,11 @@ protected:
     hero & level_up() override;
 public:
     power() = delete;
-    explicit power(std::string &&name)
-        :hero(std::move(name), std::string("power")) {
+    explicit power(std::string &name)
+        :hero(name, std::string("power")) {
     }
     explicit power(
-        std::string &&name,
+        const std::string &name,
         const double &strength,
         const double &agility,
         const double &intelligence,
@@ -157,7 +157,7 @@ public:
         const double &armor,
         const std::string &type)
         :hero(
-            std::move(name),
+            name,
             strength,
             agility,
             intelligence,
@@ -181,11 +181,11 @@ protected:
     hero & level_up() override;
 public:
     agile() = delete;
-    explicit agile(std::string &&name)
-        :hero(std::move(name), std::string("agile")) {
+    explicit agile(std::string &name)
+        :hero(name, std::string("agile")) {
     }
     explicit agile(
-        std::string &&name,
+        const std::string &name,
         const double &strength,
         const double &agility,
         const double &intelligence,
@@ -198,9 +198,9 @@ public:
         const double &health,
         const double &attack_time,
         const double &armor,
-        const std::string type)
+        const std::string &type)
         :hero(
-            std::move(name),
+            name,
             strength,
             agility,
             intelligence,
@@ -224,11 +224,11 @@ protected:
     hero & level_up() override;
 public:
     intellectual() = delete;
-    explicit intellectual(std::string &&name)
-        :hero(std::move(name), std::string("intellectual")) {
+    explicit intellectual(std::string &name)
+        :hero(name, std::string("intellectual")) {
     }
     explicit intellectual(
-        std::string &&name,
+        const std::string &name,
         const double &strength,
         const double &agility,
         const double &intelligence,
@@ -243,7 +243,7 @@ public:
         const double &armor,
         const std::string &type)
         :hero(
-            std::move(name),
+            name,
             strength,
             agility,
             intelligence,
@@ -267,11 +267,11 @@ protected:
     hero & level_up() override;
 public:
     meat() = delete;
-    explicit meat(std::string &&name)
-        :hero(std::move(name), std::string("meat")) {
+    explicit meat(std::string &name)
+        :hero(name, std::string("meat")) {
     }
     explicit meat(
-        std::string &&name,
+        const std::string &name,
         const double &strength,
         const double &agility,
         const double &intelligence,
@@ -286,7 +286,7 @@ public:
         const double &armor,
         const std::string &type)
         :hero(
-            std::move(name),
+            name,
             strength,
             agility,
             intelligence,

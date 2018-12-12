@@ -205,18 +205,19 @@ bool server_terminal::signin(const std::string & name, const std::string & hash)
         user_server new_user(name, hash);
         for (auto i = 0; i != 3; ++i) {
             std::shared_ptr<hero> new_hero = nullptr;
+            std::string new_hero_name = "new_hero";
             const auto random_val = u_(e_);
             if (random_val == 0) {
-                new_hero.reset(new power("new_hero"));
+                new_hero.reset(new power(new_hero_name));
             }
             if (random_val == 1) {
-                new_hero.reset(new agile("new_hero"));
+                new_hero.reset(new agile(new_hero_name));
             }
             if (random_val == 2) {
-                new_hero.reset(new intellectual("new_hero"));
+                new_hero.reset(new intellectual(new_hero_name));
             }
             if (random_val == 3) {
-                new_hero.reset(new meat("new_hero"));
+                new_hero.reset(new meat(new_hero_name));
             }
             heroes_.push_back(new_hero->serialize_the_hero());
             new_user.heroes.push_back(static_cast<int>(heroes_.size() - 1));
