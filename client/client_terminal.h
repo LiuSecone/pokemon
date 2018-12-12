@@ -54,7 +54,7 @@ public:
     int run();
     void login_or_signin();
     void logout_or_select_user();
-    void select_hero();
+    void select_hero_or_see_user_info();
     void show_detail_or_fight();
     void duel_fight();
     void upgrade_fight();

@@ -64,7 +64,7 @@ int client_terminal::run() {
             logout_or_select_user();
             break;
         case state::view_user:
-            select_hero();
+            select_hero_or_see_user_info();
             break;
         case state::view_hero:
             show_detail_or_fight();
@@ -151,7 +151,7 @@ void client_terminal::logout_or_select_user() {
     }
 }
 
-void client_terminal::select_hero() {
+void client_terminal::select_hero_or_see_user_info() {
     std::string request_string;
     int ans;
     std::cout << "1.view all hero" << std::endl
