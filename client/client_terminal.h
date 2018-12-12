@@ -60,6 +60,8 @@ public:
     void upgrade_fight();
     void get_a_hero(const std::shared_ptr<hero> & hero);
     void lost_a_hero();
+    void update_fight(const int & win);
+    void update_ith_hero(const std::shared_ptr<hero>& hero);
     int fight_and_get_winner(const std::shared_ptr<hero> &h1, const std::shared_ptr<hero> &h2);
     std::shared_ptr<hero> get_selected_hero();
     std::shared_ptr<hero> choose_opponent();

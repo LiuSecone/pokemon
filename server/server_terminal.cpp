@@ -348,12 +348,12 @@ std::string server_terminal::process_request(const std::string &str) {
             reply_string = get_ith_user_heroes(std::stoi(request_vector[1]));
         }
     }
-    if (request_vector[0] == "get_ith_user_ith_hero") {
-        if (request_vector.size() != 3) {
+    if (request_vector[0] == "get_ith_hero") {
+        if (request_vector.size() != 2) {
             reply_string = "Get failed, too less or too many param.";
         }
         else {
-            reply_string = heroes_[users_[std::stoi(request_vector[1])].heroes[std::stoi(request_vector[2])]];
+            reply_string = heroes_[std::stoi(request_vector[1])];
         }
     }
     if (request_vector[0] == "get_hero") {
@@ -393,6 +393,7 @@ std::string server_terminal::process_request(const std::string &str) {
                 heroes.push_back(static_cast<int>(heroes_.size() - 1));
             }
             reply_string = "Successful!";
+            need_save_users = true;
         }
     }
     if (request_vector[0] == "get_ith_user_info") {
@@ -401,6 +402,30 @@ std::string server_terminal::process_request(const std::string &str) {
         }
         else {
             reply_string = users_[std::stoi(request_vector[1])].serialize_the_user();
+        }
+    }
+    if (request_vector[0] == "update_fight") {
+        if (request_vector.size() != 3) {
+            reply_string = "Update failed, too less or too many param.";
+        }
+        else {
+            auto & user = users_[std::stoi(request_vector[1])];
+            user.all += 1;
+            user.win += std::stoi(request_vector[2]);
+            reply_string = "Successful!";
+            need_save_users = true;
+        }
+    }
+    if (request_vector[0] == "uh") {
+        if (request_vector.size() != 3) {
+            reply_string = "Update failed, too less or too many param.";
+        }
+        else {
+            auto & hero = heroes_[std::stoi(request_vector[1])];
+            hero = request_vector[2];
+            reply_string = "Successful!";
+            need_save_heroes = true;
+            need_save_users = true;
         }
     }
     //TODO: process post_request

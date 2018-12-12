@@ -227,10 +227,12 @@ void client_terminal::duel_fight() {
         gained_exp /= cur_hero->get_level();
         cur_hero->gain_exp(gained_exp);
         std::cout << "get_a_hero" << std::endl;
+        update_fight(1);
         get_a_hero(opponent);
     }
     else {
         std::cout << "lost_a_hero" << std::endl;
+        update_fight(0);
         lost_a_hero();
     }
     state_ = state::view_user;
@@ -246,6 +248,10 @@ void client_terminal::upgrade_fight() {
         gained_exp /= cur_hero->get_level() - opponent->get_level() + 1;
         gained_exp /= cur_hero->get_level();
         cur_hero->gain_exp(gained_exp);
+        update_fight(1);
+    }
+    else {
+        update_fight(0);
     }
     state_ = state::view_user;
 }
@@ -266,6 +272,26 @@ void client_terminal::lost_a_hero() {
     request_string += std::to_string(user_id_);
     request_string += '/';
     request_string += std::to_string(viewing_hero_);
+    const auto reply_string = post_request(request_string);
+    std::cout << reply_string << std::endl;
+}
+
+void client_terminal::update_fight(const int & win) {
+    std::string request_string = "update_fight/";
+    request_string += std::to_string(user_id_);
+    request_string += '/';
+    request_string += std::to_string(win);
+    const auto reply_string = post_request(request_string);
+    std::cout << reply_string << std::endl;
+}
+
+void client_terminal::update_ith_hero(const std::shared_ptr<hero>& hero) {
+    std::string request_string;
+    request_string += "uh/";
+    request_string + std::to_string(viewing_hero_);
+    request_string += '/';
+    const auto temp_string = hero->serialize_the_hero();
+    request_string += temp_string;
     const auto reply_string = post_request(request_string);
     std::cout << reply_string << std::endl;
 }
@@ -295,9 +321,7 @@ int client_terminal::fight_and_get_winner(const std::shared_ptr<hero> &h1, const
 }
 
 std::shared_ptr<hero> client_terminal::get_selected_hero() {
-    std::string request_string = "get_ith_user_ith_hero/";
-    request_string += std::to_string(viewing_user_);
-    request_string += '/';
+    std::string request_string = "get_ith_hero/";
     request_string += std::to_string(viewing_hero_);
     std::cout << request_string << std::endl;
     const auto reply_string = post_request(request_string);
@@ -305,28 +329,28 @@ std::shared_ptr<hero> client_terminal::get_selected_hero() {
     auto const element = my_algo_lib::split(reply_string, ' ');
     std::shared_ptr<hero> selected_hero = nullptr;
     if (element.back() == "power") {
-        selected_hero.reset(new power(element[0], std::stoi(element[1]), std::stoi(element[2]), 
-            std::stoi(element[3]), std::stoi(element[4]), std::stoi(element[5]), std::stoi(element[6]), 
-            std::stoi(element[7]), std::stoi(element[8]), std::stoi(element[9]), std::stoi(element[10]),
-            std::stoi(element[11]), std::stoi(element[12]), element[13]));
+        selected_hero.reset(new power(element[0], std::stof(element[1]), std::stof(element[2]), 
+            std::stof(element[3]), std::stof(element[4]), std::stof(element[5]), std::stof(element[6]), 
+            std::stoi(element[7]), std::stoi(element[8]), std::stof(element[9]), std::stof(element[10]),
+            std::stoi(element[11]), std::stof(element[12]), element[13]));
     }
     if (element.back() == "agile") {
-        selected_hero.reset(new agile(element[0], std::stoi(element[1]), std::stoi(element[2]),
-            std::stoi(element[3]), std::stoi(element[4]), std::stoi(element[5]), std::stoi(element[6]),
-            std::stoi(element[7]), std::stoi(element[8]), std::stoi(element[9]), std::stoi(element[10]),
-            std::stoi(element[11]), std::stoi(element[12]), element[13]));
+        selected_hero.reset(new agile(element[0], std::stof(element[1]), std::stof(element[2]),
+            std::stof(element[3]), std::stof(element[4]), std::stof(element[5]), std::stof(element[6]),
+            std::stoi(element[7]), std::stoi(element[8]), std::stof(element[9]), std::stof(element[10]),
+            std::stoi(element[11]), std::stof(element[12]), element[13]));
     }
     if (element.back() == "intellectual") {
-        selected_hero.reset(new intellectual(element[0], std::stoi(element[1]), std::stoi(element[2]),
-            std::stoi(element[3]), std::stoi(element[4]), std::stoi(element[5]), std::stoi(element[6]),
-            std::stoi(element[7]), std::stoi(element[8]), std::stoi(element[9]), std::stoi(element[10]),
-            std::stoi(element[11]), std::stoi(element[12]), element[13]));
+        selected_hero.reset(new intellectual(element[0], std::stof(element[1]), std::stof(element[2]),
+            std::stof(element[3]), std::stof(element[4]), std::stof(element[5]), std::stof(element[6]),
+            std::stoi(element[7]), std::stoi(element[8]), std::stof(element[9]), std::stof(element[10]),
+            std::stoi(element[11]), std::stof(element[12]), element[13]));
     }
     if (element.back() == "meat") {
-        selected_hero.reset(new meat(element[0], std::stoi(element[1]), std::stoi(element[2]),
-            std::stoi(element[3]), std::stoi(element[4]), std::stoi(element[5]), std::stoi(element[6]),
-            std::stoi(element[7]), std::stoi(element[8]), std::stoi(element[9]), std::stoi(element[10]),
-            std::stoi(element[11]), std::stoi(element[12]), element[13]));
+        selected_hero.reset(new meat(element[0], std::stof(element[1]), std::stof(element[2]),
+            std::stof(element[3]), std::stof(element[4]), std::stof(element[5]), std::stof(element[6]),
+            std::stoi(element[7]), std::stoi(element[8]), std::stof(element[9]), std::stof(element[10]),
+            std::stoi(element[11]), std::stof(element[12]), element[13]));
     }
     return selected_hero;
 }
