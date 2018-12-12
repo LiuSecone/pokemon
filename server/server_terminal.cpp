@@ -373,6 +373,25 @@ std::string server_terminal::process_request(const std::string &str) {
         else {
             auto & heroes = users_[std::stoi(request_vector[1])].heroes;
             heroes.erase(heroes.begin() + std::stoi(request_vector[2]));
+            if (heroes.empty()) {
+                std::shared_ptr<hero> new_hero = nullptr;
+                std::string new_hero_name = "new_hero";
+                const auto random_val = u_(e_);
+                if (random_val == 0) {
+                    new_hero.reset(new power(new_hero_name));
+                }
+                if (random_val == 1) {
+                    new_hero.reset(new agile(new_hero_name));
+                }
+                if (random_val == 2) {
+                    new_hero.reset(new intellectual(new_hero_name));
+                }
+                if (random_val == 3) {
+                    new_hero.reset(new meat(new_hero_name));
+                }
+                heroes_.push_back(new_hero->serialize_the_hero());
+                heroes.push_back(static_cast<int>(heroes_.size() - 1));
+            }
             reply_string = "Successful!";
         }
     }
