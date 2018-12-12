@@ -401,7 +401,20 @@ std::string server_terminal::process_request(const std::string &str) {
             reply_string = "Get failed, too less or too many param.";
         }
         else {
-            reply_string = users_[std::stoi(request_vector[1])].serialize_the_user();
+            auto & user = users_[std::stoi(request_vector[1])];
+            reply_string += user.user_name;
+            reply_string += ' ';
+            if (user.heroes.size() < 3) {
+                reply_string += "bronze";
+            }
+            else if (user.heroes.size() < 6) {
+                reply_string += "sliver";
+            }
+            else {
+                reply_string += "gold";
+            }
+            reply_string += ' ';
+            reply_string += std::to_string(user.win) + '/' + std::to_string(user.all);
         }
     }
     if (request_vector[0] == "update_fight") {
