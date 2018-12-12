@@ -204,9 +204,7 @@ void client_terminal::show_detail_or_fight() {
         //TODO: rename the hero
     }
     if (ans == 4) {
-        request_string += "get_ith_user_ith_hero/";
-        request_string += std::to_string(viewing_user_);
-        request_string += '/';
+        request_string += "get_ith_hero/";
         request_string += std::to_string(viewing_hero_);
         const auto reply_string = post_request(request_string);
         std::cout << reply_string << std::endl;
