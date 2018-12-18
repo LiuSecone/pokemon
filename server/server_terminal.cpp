@@ -219,7 +219,7 @@ bool server_terminal::signin(const std::string & name, const std::string & hash)
                 new_hero.reset(new meat("new_hero"));
             }
             heroes_.push_back(new_hero->serialize_the_hero());
-            new_user.heroes.push_back(static_cast<int>(heroes_.size()));
+            new_user.heroes.push_back(static_cast<int>(heroes_.size()) - 1);
         }
         users_.push_back(new_user);
     }
