@@ -356,14 +356,16 @@ std::string server_terminal::process_request(const std::string &str) {
             reply_string = heroes_[std::stoi(request_vector[1])];
         }
     }
-    if (request_vector[0] == "get_hero") {
+    if (request_vector[0] == "own_a_hero") {
         if (request_vector.size() != 3) {
-            reply_string = "Get failed, too less or too many param.";
+            reply_string = "Own failed, too less or too many param.";
         }
         else {
             heroes_.push_back(request_vector[2]);
             users_[std::stoi(request_vector[1])].heroes.push_back(static_cast<int>(heroes_.size() - 1));
             reply_string = "Successful!";
+            need_save_heroes = true;
+            need_save_users = true;
         }
     }
     if (request_vector[0] == "ith_user_lost_a_hero") {
@@ -429,7 +431,7 @@ std::string server_terminal::process_request(const std::string &str) {
             need_save_users = true;
         }
     }
-    if (request_vector[0] == "uh") {
+    if (request_vector[0] == "uh") {  // update hero
         if (request_vector.size() != 3) {
             reply_string = "Update failed, too less or too many param.";
         }

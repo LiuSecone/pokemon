@@ -56,6 +56,7 @@ int client_terminal::init() {
 
 int client_terminal::run() {
     while (!exit_flag_) {
+        std::cout << "=====================" << std::endl;
         switch (state_) {
         case state::not_login:
             login_or_signin();
@@ -204,9 +205,7 @@ void client_terminal::show_detail_or_fight() {
         //TODO: rename the hero
     }
     if (ans == 4) {
-        request_string += "get_ith_user_ith_hero/";
-        request_string += std::to_string(viewing_user_);
-        request_string += '/';
+        request_string += "get_ith_hero/";
         request_string += std::to_string(viewing_hero_);
         const auto reply_string = post_request(request_string);
         std::cout << reply_string << std::endl;
@@ -226,9 +225,9 @@ void client_terminal::duel_fight() {
         gained_exp /= cur_hero->get_level() - opponent->get_level() + 1;
         gained_exp /= cur_hero->get_level();
         cur_hero->gain_exp(gained_exp);
-        std::cout << "get_a_hero" << std::endl;
+        std::cout << "own_a_hero" << std::endl;
         update_fight(1);
-        get_a_hero(opponent);
+        own_a_hero(opponent);
     }
     else {
         std::cout << "lost_a_hero" << std::endl;
@@ -256,9 +255,9 @@ void client_terminal::upgrade_fight() {
     state_ = state::view_user;
 }
 
-void client_terminal::get_a_hero(const std::shared_ptr<hero>& hero) {
+void client_terminal::own_a_hero(const std::shared_ptr<hero>& hero) {
     std::string request_string;
-    request_string += "get_hero/";
+    request_string += "own_a_hero/";
     request_string += std::to_string(user_id_);
     request_string += '/';
     const auto temp_string = hero->serialize_the_hero();
