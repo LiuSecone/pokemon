@@ -343,12 +343,12 @@ std::string server_terminal::process_request(const std::string &str) {
             reply_string = get_ith_user_heroes(std::stoi(request_vector[1]));
         }
     }
-    if (request_vector[0] == "get_ith_user_ith_hero") {
-        if (request_vector.size() != 3) {
+    if (request_vector[0] == "get_ith_hero") {
+        if (request_vector.size() != 2) {
             reply_string = "Get failed, too less or too many param.";
         }
         else {
-            reply_string = users_[std::stoi(request_vector[1])].heroes[std::stoi(request_vector[2])];
+            reply_string = heroes_[std::stoi(request_vector[1])];
         }
     }
     //TODO: process request
