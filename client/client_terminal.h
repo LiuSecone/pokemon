@@ -58,7 +58,7 @@ public:
     void show_detail_or_fight();
     void duel_fight();
     void upgrade_fight();
-    void get_a_hero(const std::shared_ptr<hero> & hero);
+    void own_a_hero(const std::shared_ptr<hero> & hero);
     void lost_a_hero();
     void update_fight(const int & win);
     void update_ith_hero(const std::shared_ptr<hero>& hero);
