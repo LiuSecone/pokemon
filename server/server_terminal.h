@@ -51,13 +51,12 @@ private:
     std::string get_all_users();
     std::string get_all_online_users();
     std::string get_ith_user_heroes(const int & ith);
+    std::string process_request(const std::string &str);
+    int process_client_socket(const SOCKET client_socket);
 public:
     server_terminal();
     int init();
-
-    std::string process_request(const std::string &str);
     int run();
-    int process_client_socket(const SOCKET client_socket);
     ~server_terminal();
 };
 
